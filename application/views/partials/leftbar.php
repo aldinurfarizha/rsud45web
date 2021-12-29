@@ -2,46 +2,17 @@
 $model =& get_instance();
 $model->load->model('M_pengalaman');
 $model->load->model('M_master');
-$role=$this->session->userdata('role');
+$role_id=$this->session->userdata('role_id');
 $iduser=$this->session->userdata('iduser');
-$tos=$this->session->userdata('tos');
 
-if(!$tos&&$role==2){
-  $tosarr=$model->M_master->gettos()->row();
-  ?>
-<div class="modal fade" id="tos" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel"> <?=$tosarr->judul?></h4>
-      </div>
-      <div class="modal-body">
-      <div class="overflow-auto" style="max-width: 100%; max-height: 300px;">
-      <?=$tosarr->isi?>
-      </div>
-      <br>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="checkbox">
-                    <label class="form-check-label" for="exampleCheck1"><b><?=$tosarr->checklist?></b></label>
-                    <p class="text-sm text-danger" style="display:none" id="check_warning">Anda Belum Menyetujui</p>
-                  </div>
-      </div>
-      
-      <div class="modal-footer">
-        <button type="button" onclick="tossetuju()" class="btn btn-lg btn-primary">SETUJU</button>
-      </div>
-    </div>
-  </div>
-</div>
-<?php }   
-switch ($role){
+switch ($role_id){
   case '1';
   ?>
 <aside class="main-sidebar sidebar-light-dark elevation-4">
     <a href="index3.html" class="brand-link bg-success">
       <img src="<?=base_url('assets/')?>dist/img/logo.png" alt="Logo PDAM" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light"><b>SIKaP</b></span>
+      <span class="brand-text font-weight-light"><b><?=APP_NAME?></b></span>
     </a>
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -115,7 +86,79 @@ switch ($role){
   </aside>
   <?php 
   break;
+ case '4';
+  ?>
+<aside class="main-sidebar sidebar-light-dark elevation-4">
+    <a href="index3.html" class="brand-link bg-primary">
+      <span class="brand-text font-weight-light"><b><?=APP_NAME?></b></span>
+    </a>
+    <div class="sidebar">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="info ">
+          <a href="#" class="d-block text-lg"><?=$this->session->userdata('nama').'-'.$this->session->userdata('nama_role');?></a>
+        </div>
+      </div>
 
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
+            <a href="<?=base_url('admin/dashboard')?>" class="nav-link <?php if($this->uri->segment('2')=='dashboard') { echo"active";}?>">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('pic/poli')?>" class="nav-link <?php if($this->uri->segment('2')=='poli') { echo"active";}?>">
+              <i class="nav-icon fas fa-bell"></i>
+              <p>
+                Poli
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('pic/dokter')?>" class="nav-link <?php if($this->uri->segment('2')=='dokter') { echo"active";}?>">
+              <i class="nav-icon fas fa-user-check"></i>
+              <p>
+                Dokter
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('pic/user')?>" class="nav-link <?php if($this->uri->segment('2')=='user') { echo"active";}?>">
+              <i class="nav-icon fas fa-cogs"></i>
+              <p>
+                User
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?=base_url('pic/laporan_poli')?>" class="nav-link <?php if($this->uri->segment('2')=='laporan_poli') { echo"active";}?>">
+              <i class="nav-icon fas fa-file"></i>
+              <p>
+                Laporan Poli
+              </p>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a href="<?=base_url('pic/laporan_registrasi')?>" class="nav-link <?php if($this->uri->segment('2')=='laporan_registrasi') { echo"active";}?>">
+              <i class="nav-icon fas fa-file"></i>
+              <p>
+                Laporan Registrasi
+              </p>
+            </a>
+          </li>
+          <li class="nav-item text-center">
+            <a href="#" id="logout" class="btn bg-danger">Log Out <i class="nav-icon fas fa-power-off"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  <?php 
+  break;
 
    case '2';
   ?>

@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="<?=base_url('assets/')?>plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <link rel="stylesheet" href="<?=base_url('assets/')?>dist/css/preloader.css">
-  <link rel="icon" href="<?=base_url('assets/dist/img/favicon.ico')?>" type="image/gif" sizes="16x16">
     <link rel="stylesheet" href="<?=base_url('assets/plugins/')?>pace-progress/themes/orange/pace-theme-flat-top.css">
 </head>
 <body class="hold-transition login-page">
@@ -20,7 +19,7 @@
 <h4><?=SUB_APP_NAME?> <br> <b><?=APP_NAME?></b></h3>
 
    <br>
-       <img src="<?=base_url('assets/')?>dist/img/logo.png" alt="Logo PDAM" class="brand-image img-circle elevation-3"
+       <img src="<?=base_url('assets/')?>dist/img/logo.png" alt="Logo PDAM" class="brand-image"
            style="width:200px">
   </div>
   <div class="card">
@@ -29,7 +28,7 @@
         <div class="row justify-content-center">
             <div class="form-group col-sm-12">
                 <label for="">E-Mail</label>
-                    <input type="email" id="email" class="form-control">
+                    <input type="username" id="username" class="form-control">
             </div>
             <div class="form-group col-sm-12">
                 <label for="">Password</label>
@@ -56,12 +55,12 @@
   var loadingeffect='<div style="text-align:center"><i class="fas fa-2x fa-sync-alt fa-3x fa-spin" style="margin-top: 30px; margin-bottom: 30px;" aria-hidden="true"></i></div>';
         $('#submit').submit(function(e){
           e.preventDefault(); 
-          var email = $("#email").val();
+          var username = $("#username").val();
           var password = $("#password").val();
-          if(email.length == "") {
+          if(username.length == "") {
             Swal.fire(
-              'Email',
-              'Email Wajib di isi',
+              'username',
+              'username Wajib di isi',
               'warning'
             );
           } else if(password.length == "") {
@@ -75,7 +74,7 @@
               url: "<?= base_url('auth/prosess_login')?>",
               type: "POST",
               data: {
-                  "email": email,
+                  "username": username,
                   "password": password
               },
               beforeSend(){
@@ -95,7 +94,7 @@
                   case '0':
                     Swal.fire(
                         'Gagal',
-                        'Email Atau Password Salah',
+                        'username Atau Password Salah',
                         'error'
                       )
                     break;
@@ -117,6 +116,16 @@
                         timer:"1000",
                           }).then(function() {
                               window.location = "<?= base_url('penyedia/dashboard/')?>";
+                            });
+                      break;
+                      case '4':
+                        Swal.fire({
+                        title: "Berhasil",
+                        icon: "success",
+                        button: "Lanjutkan",
+                        timer:"1000",
+                          }).then(function() {
+                              window.location = "<?= base_url('pic/dashboard')?>";
                             });
                       break;
                       case '99':

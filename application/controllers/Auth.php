@@ -19,34 +19,25 @@ class Auth extends CI_Controller  {
       
     
     public function prosess_login(){
-        $email=$this->input->post('email');
+        $username=$this->input->post('username');
         $password=$this->input->post('password');
         $data=array(
-            'email'=>$email,
+            'username'=>$username,
             'password'=>$password
         );
         $result=$this->Authentication->login($data);
         if($result->num_rows() > 0){
             $row=$result->row();
             $params=array(
-                'iduser'=>$row->iduser,
-                'email'=>$row->email,
-                'role'=>$row->role,
+                'user_id'=>$row->user_id,
+                'username'=>$row->username,
+                'role_id'=>$row->role_id,
+                'nama_role'=>$row->nama_role,
                 'nama'=>$row->nama,
-                'tos'=>$row->tos
+                'poli'=>$row->poli_id,
             );
-            if($row->status == '0'){
-                echo 99;
-                return;
-            }
-            if($row->role == '1'){
-                echo 1;
-                $this->session->set_userdata($params);
-            }
-            else{
-                echo 2;
-                $this->session->set_userdata($params);
-            }
+            echo $row->role_id;
+            $this->session->set_userdata($params);
         }
         else{
          echo 0;
