@@ -7,7 +7,7 @@ class Authentication extends CI_Model{
       $this->db->from('user');
       $this->db->join('role', 'user.role_id=role.role_id', 'left');
       $this->db->where('username', $data['username']);
-      $this->db->where('password', sha1($data['password']));
+      $this->db->where('password', $data['password']);
       $query= $this->db->get();
       return $query;
     }

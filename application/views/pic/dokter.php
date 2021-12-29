@@ -13,22 +13,24 @@
                 <div class="col-sm-12">
                         <div class="card card-dark">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="fas fa-money-bill-alt"></i> Master Poli</h3>
+                            <h3 class="card-title"><i class="fas fa-money-bill-alt"></i> Master Dokter</h3>
                         </div>
                             <div class="card-body">
                                 <div class="row justify-content-end">
                                     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
-                                    <i class="fa fa-plus"></i> Tambah Poli
+                                    <i class="fa fa-plus"></i> Tambah Dokter
                                     </button>
                                 </div>
                                         <br>
                                         <table id="table" class="table table-sm table-striped table-bordered no-wrap">
                                         <thead>
                                             <tr class="text-center">
-                                                <th>No.</th>
-                                                <th>Nama Poli</th>
-                                                <th>Maximal Pelayanan</th>
-                                                <th>Status Poli</th>
+                                                <th style="width: 50px;">No.</th>
+                                                <th>Nama Dokter</th>
+                                                <th>Username</th>
+                                                <th>Password</th>
+                                                <th>Poli</th>
+                                                <th>Status</th>
                                                 <th width="100px"><center>Aksi</center></th>
                                             </tr>
                                         </thead>
@@ -40,15 +42,17 @@
                                               ?>
                                               <tr>
                                               <td><?= $no?></td>
-                                              <td><?= $datas->nama_poli?></td>
-                                              <td class="text-center"><?= $datas->max.' (Orang/Hari)'?></td>
-                                              <td class="text-center"><?php if($datas->status){?>
+                                              <td><?= $datas->nama_dokter?></td>
+                                              <td><?= $datas->username?></td>
+                                              <td><?= $datas->password?></td>
+                                              <td class="text-center"><?= $datas->nama_poli?></td>
+                                              <td class="text-center"><?php if($datas->status_dokter){?>
                                                 <span class="badge bg-primary">Aktif</span><?php }else{?>
                                                     <span class="badge bg-danger">Tidak Aktif</span><?php } ?>
                                                 </td>
                                               <td style="text-align: center;">
-                                              <button onclick="hapus(<?= $datas->poli_id?>)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                              <button onclick="edit('<?= $datas->poli_id?>' , '<?= $datas->nama_poli?>', '<?= $datas->max?>', '<?= $datas->status?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
+                                              <button onclick="hapus(<?= $datas->dokter_id?>)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                              <button onclick="edit('<?= $datas->dokter_id?>' , '<?= $datas->nama_dokter?>', '<?= $datas->poli_id?>', '<?= $datas->status?>', '<?= $datas->nama_poli?>', '<?= $datas->username?>', '<?= $datas->password?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
                                               </td>
                                               </tr>
                                           <?php } ?>
@@ -69,7 +73,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header bg-success">
-              <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Tambah Poli</h4>
+              <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Tambah Dokter</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -78,17 +82,30 @@
             <form id="inputform">
                                 <div class="row">
                                     <div class="form-group col-sm-12">
-                                    <label for="">Nama Poli</label>
-                                        <input type="text" name="nama_poli" class="form-control">
+                                    <label for="">Nama Dokter</label>
+                                        <input type="text" name="nama_dokter" class="form-control">
                                     </div>
                                     <div class="form-group col-sm-12">
-                                    <label for="">Maximal Pelayanan</label>
-                                        <input type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" name="max" class="form-control">
+                                    <label for="">Username</label>
+                                        <input type="text" name="username" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                    <label for="">Password</label>
+                                        <input type="text" name="password" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                    <label for="">Poli Penempatan</label>
+                                        <select class="form-control" name="poli_id" id="poli_id">
+                                                <option value='' selected='selected'>--Pilih Poli--</option>
+                                                <?php foreach($poli as $polis){?>
+                                                    <option value="<?=$polis->poli_id?>"><?=$polis->nama_poli?></option>
+                                                <?php } ?>
+                                            </select>
                                     </div>
                                     <div class="col-sm-12">
                                     <label for="">Status</label>
-                                        <select class="form-control" name="status" id="">
-                                            <option value="">--Pilih Status Poli--</option>
+                                        <select class="form-control" name="status" id="status">
+                                            <option value="" selected>--Pilih Status--</option>
                                             <option value="1">Aktif</option>
                                             <option value="0">Tidak Aktif</option>
                                         </select>
@@ -117,13 +134,25 @@
             
                                     <div class="row">
                                         <div class="form-group col-sm-12">
-                                        <label for="">Nama Poli</label>
+                                        <label for="">Nama Dokter</label>
                                             <input type="hidden" id="id" name="id" class="form-control" required>
-                                            <input type="text" id="nama_polis" name="nama_polis" class="form-control" required>
+                                            <input type="text" id="nama_dokters" name="nama_dokters" class="form-control" required>
                                         </div>
                                         <div class="form-group col-sm-12">
-                                        <label for="">Maximal Pelayanan</label>
-                                            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" id="maxs" name="maxs" class="form-control" required>
+                                    <label for="">Username</label>
+                                        <input type="text" name="usernames" id="usernames" class="form-control" readonly>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                    <label for="">Password</label>
+                                        <input type="text" name="passwords" id="passwords" class="form-control">
+                                    </div>
+                                        <div class="form-group col-sm-12">
+                                        <label for="">Poli Dokter</label>
+                                        <select class="form-control" name="poli_ids" id="poli_ids">
+                                                <?php foreach($poli as $polis){?>
+                                                    <option value="<?=$polis->poli_id?>"><?=$polis->nama_poli?></option>
+                                                <?php } ?>
+                                            </select>
                                         </div>
                                         <div class="form-group col-sm-12">
                                         <label for="">Status</label>
@@ -150,12 +179,17 @@ $('#table').DataTable({
         };
         $('#inputform').validate({
             rules: {
-                nama_poli: {
+                nama_dokter: {
                     required: true,
                 },
-                max: {
+                username: {
                     required: true,
-                    digits:true
+                },
+                password: {
+                    required: true,
+                },
+                poli_id: {
+                    required: true,
                 },
 
                 status: {
@@ -163,11 +197,16 @@ $('#table').DataTable({
                 },
             },
             messages: {
-                nama_poli: {
+                nama_dokter: {
                     required: "Wajib di Pilih",
                 },
-                max: {
-                    digits: "Isi dengan angka",
+                username: {
+                    required: "Wajib di isi",
+                },
+                password: {
+                    required: "Wajib di isi",
+                },
+                poli_id: {
                     required: "Wajib di isi",
                 },
                 
@@ -188,7 +227,7 @@ $('#table').DataTable({
             },
             submitHandler: function() {
                 $.ajax({
-              url: "<?= base_url('pic/inputpoli')?>",
+              url: "<?= base_url('pic/inputdokter')?>",
               type:"post",
               data:$('#inputform').serialize(), 
               beforeSend: function () {
@@ -225,12 +264,14 @@ $('#table').DataTable({
                 }
             
         });
-        function edit(id,nama_poli, max, status){
+        function edit(id,nama_dokter, poli_id, status, polistring,username,password){
         var strstatus;
         if(status){strstatus='Aktif'}else{strstatus='Tidak Aktif'};
         $('#id').val(id);
-        $('#nama_polis').val(nama_poli);
-        $('#maxs').val(max);
+        $('#nama_dokters').val(nama_dokter);
+        $('#usernames').val(username);
+        $('#passwords').val(password);
+        $('#poli_ids').append('<option selected value="'+poli_id+'">'+polistring+'</option>');
         $('#statuss').empty();
         $('#statuss').append('<option selected value="'+status+'">'+strstatus+'</option>');
         $('#statuss').append('<option value="1">Aktif</option>');
@@ -241,27 +282,35 @@ $('#table').DataTable({
         };
         $('#editform').validate({
             rules: {
-                nama_polis: {
+                nama_dokters: {
                     required: true,
                 },
-                maxs: {
+                poli_ids: {
                     required: true,
-                    digits:true
                 },
-
+                usernames: {
+                    required: true,
+                },
+                passwords: {
+                    required: true,
+                },
                 statuss: {
                     required: true,
                 },
             },
             messages: {
-                nama_polis: {
+                nama_dokters: {
                     required: "Wajib di Pilih",
                 },
-                maxs: {
-                    digits: "Isi dengan angka",
+                poli_ids: {
                     required: "Wajib di isi",
                 },
-                
+                usernames: {
+                    required: "Wajib di isi",
+                },
+                passwords: {
+                    required: "Wajib di isi",
+                },
                 statuss: {
                     required: "Wajib di pilih",
                 },
@@ -279,7 +328,7 @@ $('#table').DataTable({
             },
             submitHandler: function() {
                 $.ajax({
-              url: "<?= base_url('pic/editpoli')?>",
+              url: "<?= base_url('pic/editdokter')?>",
               type:"post",
               data:$('#editform').serialize(), 
               beforeSend: function () {
@@ -318,7 +367,7 @@ $('#table').DataTable({
             Swal.fire({
                 icon: 'question',
                 title: 'Hapus',
-                text: 'Anda yakin ingin Menghapus Poli ini ?',
+                text: 'Anda yakin ingin Menghapus ini ?',
                 showConfirmButton: true,
                 showCancelButton: true,
                 showBackdrop: true,
@@ -327,7 +376,7 @@ $('#table').DataTable({
             }).then(function(data){
                 if(data.value === true){
                     $.ajax({
-                    url: "<?= base_url('pic/deletepoli')?>",
+                    url: "<?= base_url('pic/deletedokter')?>",
                     type:"post",
                     data: {
                         "id": id,

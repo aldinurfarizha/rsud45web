@@ -30,23 +30,32 @@ class Global_model extends CI_Model{
       $this->db->where($data);
       return $this->db->delete($table);
     }
-    function checkeditbyid($table,$data){
-      $this->db->where($data);
-      return $this->db->get($table)->num_rows();
-    }
     function insertcallback($table,$data){
       return ($this->db->insert($table, $data))  ?   $this->db->insert_id()  :   false;
     }
-    function verifikasi($table, $data){
-      $this->db->set('status_verif', '1');
-      $this->db->where($data);
-      return $this->db->update($table);
+    function getdokter(){
+        $this->db->select('dokter.*, poli.*, dokter.status as status_dokter');
+        $this->db->from('dokter');
+        $this->db->join('poli', 'dokter.poli_id = poli.poli_id', 'left');
+        $this->db->where('dokter.hapus', 0);
+        return $this->db->get();
     }
-    function tolak($table, $data){
-      $this->db->set('status_verif', '2');
-      $this->db->where($data);
-      return $this->db->update($table);
-    }
+    function getuser(){
+      $this->db->select('user.*, poli.*, role.*');
+      $this->db->from('user');
+      $this->db->join('poli', 'user.poli_id = poli.poli_id', 'left');
+      $this->db->join('role', 'user.role_id = role.role_id', 'left');
+      return $this->db->get();
+  }
+  function getuserwhere($param){
+    $this->db->select('user.*, poli.*, role.*');
+    $this->db->from('user');
+    $this->db->join('poli', 'user.poli_id = poli.poli_id', 'left');
+    $this->db->join('role', 'user.role_id = role.role_id', 'left');
+    $this->db->where($param);
+    return $this->db->get();
+}
+   
     function count_dashboard_admin(){
       $param=array(
         'status_verif'=>'',
@@ -170,8 +179,8 @@ class Global_model extends CI_Model{
       );
       return $result;
     }
-    function check($table,$iduser){
-      $this->db->where('iduser',$iduser);
+    function check($table,$where){
+      $this->db->where($where);
       return $this->db->get($table)->num_rows();
     }
 }
