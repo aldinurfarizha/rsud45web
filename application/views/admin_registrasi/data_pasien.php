@@ -39,7 +39,6 @@
                                                 <th>Provinsi</th>
                                                 <th>Kabupaten</th>
                                                 <th>Kecamatan</th>
-                                                <th>Desa</th>
                                                 <th>No. HP</th>
                                                 <th>Pekerjaan</th>
                                                 <th>Agama</th>
@@ -75,11 +74,10 @@
                                               <td><?= @$datas->provinsi?></td>
                                               <td><?= @$datas->kabupaten?></td>
                                               <td><?= @$datas->kecamatan?></td>
-                                              <td><?= @$datas->desa?></td>
                                               <td><?= @$datas->nohp?></td>
-                                              <td><?= @$datas->pekerjaan?></td>
+                                              <td><?= @$datas->nama_pekerjaan?></td>
                                               <td><?= @$datas->agama?></td>
-                                              <td><?= @$datas->pendidikan?></td>
+                                              <td><?= @$datas->nama_pendidikan?></td>
                                               <td><?= @$datas->ibu_kandung?></td>
                                               <td><?= @$datas->status_martial?></td>
                                               <td><?= @$datas->create_by?></td>
@@ -333,29 +331,109 @@ $('#table').DataTable({
         };
         $('#inputform').validate({
             rules: {
-                nama_poli: {
+                nama: {
                     required: true,
                 },
-                max: {
+                nik: {
                     required: true,
-                    digits:true
                 },
-
-                status: {
+                tmplahir: {
                     required: true,
+                },
+                tgl_lahir: {
+                    required: true,
+                },
+                kelamin: {
+                    required: true,
+                },
+                alamat: {
+                    required: true,
+                },
+                rt: {
+                    required: true,
+                },
+                rw: {
+                    required: true,
+                },
+                provinces_id: {
+                    required: true,
+                },
+                regencies_id: {
+                    required:true,
+                },
+                districts_id: {
+                    required:true,
+                },
+                nohp: {
+                    required: true,
+                },
+                pekerjaan_id: {
+                    required: true,
+                },
+                agama_id:{
+                    required: true
+                },
+                pendidikan_id:{
+                    required: true,
+                },
+                ibu_kandung: {
+                    required:true,
+                },
+                status_martial: {
+                    required:true,
                 },
             },
             messages: {
-                nama_poli: {
-                    required: "Wajib di Pilih",
+                 nama: {
+                    required: "Kolom ini Wajib di isi",
                 },
-                max: {
-                    digits: "Isi dengan angka",
-                    required: "Wajib di isi",
+                nik: {
+                    required: "Kolom ini Wajib di isi",
                 },
-                
-                status: {
-                    required: "Wajib di pilih",
+                tmplahir: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                tgl_lahir: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                kelamin: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                alamat: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                rt: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                rw: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                provinces_id: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                regencies_id: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                districts_id: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                nohp: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                pekerjaan_id: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                agama_id:{
+                    required: "Kolom ini Wajib di isi"
+                },
+                pendidikan_id:{
+                    required: "Kolom ini Wajib di isi",
+                },
+                ibu_kandung: {
+                    required: "Kolom ini Wajib di isi",
+                },
+                status_martial: {
+                    required: "Kolom ini Wajib di isi",
                 },
             },
             errorElement: 'span',
@@ -370,12 +448,17 @@ $('#table').DataTable({
                 $(element).removeClass('is-invalid');
             },
             submitHandler: function() {
+                $("#inputform").load("submit", function (e)
+            {
                 $.ajax({
-              url: "<?= base_url('pic/inputpoli')?>",
+              url: "<?= base_url('admin_registrasi/inputpasien/')?>",
               type:"post",
-              data:$('#inputform').serialize(), 
+              data:new FormData(this),
+              processData:false,
+              contentType:false,
+              cache:false,
+              async:false,
               beforeSend: function () {
-                  $("#add").attr("disabled", true);
                   Swal.fire({
                   title: 'Sedang Proses',
                   html: loadingeffect,
@@ -385,8 +468,6 @@ $('#table').DataTable({
                   });
               },
                success: function(data){
-                $("#add").attr("disabled", false);
-                $('#inputform').trigger("reset");
                 Swal.fire({
                         title: "Berhasil",
                         text: "Data Telah Berhasil di input",
@@ -396,7 +477,6 @@ $('#table').DataTable({
                             location.reload();
                             });
             }, error:function(data){
-                $("#add").attr("disabled", false);
                   Swal.fire({
                     type: 'warning',
                     title: 'Opps!',
@@ -404,7 +484,7 @@ $('#table').DataTable({
                   });
               }
           });
-               
+                });
                 }
             
         });

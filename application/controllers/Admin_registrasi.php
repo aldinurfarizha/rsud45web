@@ -22,6 +22,62 @@ class Admin_registrasi extends CI_Controller  {
         $this->Global_model->delete('pasien',$param);
 
     }
+    public function inputpasien(){
+        $config['upload_path']=".".BERKAS;
+        $config['allowed_types']='jpg|png|jpeg';
+        $config['encrypt_name'] = TRUE;
+		
+        $this->load->library('upload',$config);
+        if($this->upload->do_upload("file")){
+        $data = array('upload_data' => $this->upload->data());
+        $file= $data['upload_data']['file_name'];
+        }else{
+            $file=0;
+        }
+		$nama_admin=$this->session->userdata('nama');
+		$nama=$this->input->post('nama');
+        $nik=$this->input->post('nik');
+        $tmplahir=$this->input->post('tmplahir');
+        $tgllahir=$this->input->post('tgllahir');
+        $kelamin=$this->input->post('kelamin');
+        $alamat=$this->input->post('alamat');
+        $rt=$this->input->post('rt');
+        $rw=$this->input->post('rw');
+        $provinces_id=$this->input->post('provinces_id');
+        $regencies_id=$this->input->post('regencies_id');
+        $districts_id=$this->input->post('districts_id');
+        $nohp=$this->input->post('nohp');
+        $pekerjaan_id=$this->input->post('pekerjaan_id');
+        $agama_id=$this->input->post('agama_id');
+        $pendidikan_id=$this->input->post('pendidikan_id');
+        $ibu_kandung=$this->input->post('ibu_kandung');
+        $status_martial=$this->input->post('status_martial');
+        $no_rm=rand(100000,1000000);
+		$data=array(
+			'nama'=>$nama,
+            'no_rm'=>$no_rm,
+            'nik'=>$nik,
+            'tmplahir'=>$tmplahir,
+            'tgllahir'=>$tgllahir,
+            'kelamin'=>$kelamin,
+            'alamat'=>$alamat,
+            'rt'=>$rt,
+            'rw'=>$rw,
+            'provinces_id'=>$provinces_id,
+            'regencies_id'=>$regencies_id,
+            'districts_id'=>$districts_id,
+            'nohp'=>$nohp,
+            'pekerjaan_id'=>$pekerjaan_id,
+            'agama_id'=>$agama_id,
+            'pendidikan_id'=>$pendidikan_id,
+            'ibu_kandung'=>$ibu_kandung,
+            'status_martial'=>$status_martial,
+			'file'=>$file,
+            'create_by'=>$nama_admin
+		);
+		$this->Global_model->insert('pasien',$data);
+      
+    }
     public function getregencies($id){
         $param=array(
             'province_id'=>$id
