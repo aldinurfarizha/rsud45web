@@ -22,11 +22,11 @@
                                     </button>
                                 </div>
                                         <br>
-                                        <table id="table" class="table table-responsive table-sm table-striped table-bordered no-wrap">
+                                        <table id="table" class="table table-responsive table-sm table-striped table-bordered no-wrap table-hover">
                                         <thead>
                                             <tr class="text-center text-sm">
-                                                <th>No.</th>
-                                                <th style="width: 100px;"><center>Aksi</center></th>
+                                                <th style="min-width:1px">No.</th>
+                                                <th style="min-width:72px"><center>Aksi</center></th>
                                                 <th>No RM</th>
                                                 <th>Nama</th>
                                                 <th>NIK</th>
@@ -58,9 +58,9 @@
                                               ?>
                                               <tr class="text-sm">
                                               <td><?= $no?></td>
-                                              <td style="text-align: center;">
+                                              <td class="text-center">
                                               <button onclick="hapus('<?= $datas->id?>','<?= $datas->nama?>')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                              <button onclick="edit('<?= $datas->id?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
+                                              <a href="<?=base_url('admin_registrasi/editpasien/').$datas->id?>" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
                                               </td>
                                               <td><span class="badge text-md badge-primary"><?= @$datas->no_rm?></span></td>
                                               <td><?= @$datas->nama?></td>
@@ -114,7 +114,7 @@
                                     </div>
                                      <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">NIK</label>
-                                        <input type="text" name="nik" class="form-control form-control-sm">
+                                        <input type="text" name="nik" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control form-control-sm">
                                     </div>
                                   <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">Tempat Lahir</label>
@@ -138,11 +138,11 @@
                                     </div>
                                     <div class="form-group col-sm-3">
                                     <label class="text-sm" for="">RT</label>
-                                        <input type="text" name="rt" class="form-control form-control-sm">
+                                        <input type="text" name="rt" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control form-control-sm">
                                     </div>
                                     <div class="form-group col-sm-3">
                                     <label class="text-sm" for="">RW</label>
-                                        <input type="text" name="rw" class="form-control form-control-sm">
+                                        <input type="text" name="rw" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control form-control-sm">
                                     </div>
                                     <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">Provinsi</label>
@@ -336,6 +336,8 @@ $('#table').DataTable({
                 },
                 nik: {
                     required: true,
+                    minlength: 15,
+                    maxlength: 18,
                 },
                 tmplahir: {
                     required: true,
@@ -363,9 +365,6 @@ $('#table').DataTable({
                 },
                 districts_id: {
                     required:true,
-                },
-                nohp: {
-                    required: true,
                 },
                 pekerjaan_id: {
                     required: true,
@@ -389,6 +388,8 @@ $('#table').DataTable({
                 },
                 nik: {
                     required: "Kolom ini Wajib di isi",
+                    minlength:"Minimal 15 Angka",
+                    maxlength: "Maximal 18 Angka"
                 },
                 tmplahir: {
                     required: "Kolom ini Wajib di isi",
@@ -415,9 +416,6 @@ $('#table').DataTable({
                     required: "Kolom ini Wajib di isi",
                 },
                 districts_id: {
-                    required: "Kolom ini Wajib di isi",
-                },
-                nohp: {
                     required: "Kolom ini Wajib di isi",
                 },
                 pekerjaan_id: {
@@ -485,95 +483,6 @@ $('#table').DataTable({
               }
           });
                 });
-                }
-            
-        });
-        function edit(id,nama_poli, max, status){
-        var strstatus;
-        if(status){strstatus='Aktif'}else{strstatus='Tidak Aktif'};
-        $('#id').val(id);
-        $('#nama_polis').val(nama_poli);
-        $('#maxs').val(max);
-        $('#statuss').empty();
-        $('#statuss').append('<option selected value="'+status+'">'+strstatus+'</option>');
-        $('#statuss').append('<option value="1">Aktif</option>');
-        $('#statuss').append('<option value="0">Tidak Aktif</option>');
-    }
-    function doedit(){
-        $("#editform").valid();
-        };
-        $('#editform').validate({
-            rules: {
-                nama_polis: {
-                    required: true,
-                },
-                maxs: {
-                    required: true,
-                    digits:true
-                },
-
-                statuss: {
-                    required: true,
-                },
-            },
-            messages: {
-                nama_polis: {
-                    required: "Wajib di Pilih",
-                },
-                maxs: {
-                    digits: "Isi dengan angka",
-                    required: "Wajib di isi",
-                },
-                
-                statuss: {
-                    required: "Wajib di pilih",
-                },
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            },
-            submitHandler: function() {
-                $.ajax({
-              url: "<?= base_url('pic/editpoli')?>",
-              type:"post",
-              data:$('#editform').serialize(), 
-              beforeSend: function () {
-                  Swal.fire({
-                  title: 'Sedang Proses',
-                  html: loadingeffect,
-                  showConfirmButton: false,
-                  allowEscapeKey: false,
-                  allowOutsideClick: false,
-                  });
-              },
-               success: function(data){
-                $('#editform').trigger("reset");
-                Swal.fire({
-                        title: "Berhasil",
-                        text: "Data Telah Berhasil di edit",
-                        icon: "success",
-                        button: "Lanjut",
-                          }).then(function() {
-                            location.reload();
-                            });
-            }, error:function(data){
-                $("#add").attr("disabled", false);
-                  Swal.fire({
-                    type: 'warning',
-                    title: 'Opps!',
-                    text: 'Server Dalam Perbaikan'
-                  });
-              }
-          });
-               
                 }
             
         });

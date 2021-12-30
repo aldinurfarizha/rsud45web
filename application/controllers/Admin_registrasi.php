@@ -14,6 +14,14 @@ class Admin_registrasi extends CI_Controller  {
         $data['data']=$this->Global_model->getverifiedpasien()->result();
         $this->load->view('admin_registrasi/data_pasien',$data);
     }
+    public function editpasien($id){
+        $data['agama']=$this->Global_model->get_all('agama')->result();
+        $data['pendidikan']=$this->Global_model->get_all('pendidikan')->result();
+        $data['pekerjaan']=$this->Global_model->get_all('pekerjaan')->result();
+        $data['provinces']=$this->Global_model->get_all('provinces')->result();
+        $data['row']=$this->Global_model->getpasieddetail($id)->row();
+        $this->load->view('admin_registrasi/edit_pasien',$data);
+    }
     public function deletepasien(){
         $id=$this->input->post('id');
         $param=array(

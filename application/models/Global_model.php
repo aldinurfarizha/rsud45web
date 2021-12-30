@@ -68,6 +68,19 @@ class Global_model extends CI_Model{
     $this->db->where('no_rm >', '0');
     return $this->db->get();
 }
+function getpasieddetail($id){
+  $this->db->select('pasien.*, provinces.name as provinsi, regencies.name as kabupaten, districts.name as kecamatan, villages.name as desa, agama.nama_agama as agama, pekerjaan.nama_pekerjaan as nama_pekerjaan, pendidikan.nama_pendidikan as nama_pendidikan');
+  $this->db->from('pasien');
+  $this->db->join('provinces', 'pasien.provinces_id = provinces.id', 'left');
+  $this->db->join('regencies', 'pasien.regencies_id = regencies.id', 'left');
+  $this->db->join('villages', 'pasien.villages_id = villages.id', 'left');
+  $this->db->join('districts', 'pasien.districts_id = districts.id', 'left');
+  $this->db->join('agama', 'pasien.agama_id = agama.id', 'left');
+  $this->db->join('pekerjaan', 'pasien.pekerjaan_id = pekerjaan.id', 'left');
+  $this->db->join('pendidikan', 'pasien.pendidikan_id = pendidikan.id', 'left');
+  $this->db->where('pasien.id', $id);
+  return $this->db->get();
+}
    
     function count_dashboard_admin(){
       $param=array(
