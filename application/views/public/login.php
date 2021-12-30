@@ -15,11 +15,8 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
- <b><?=APP_NAME?></b>
-<h4><?=SUB_APP_NAME?> <br> <b><?=APP_NAME?></b></h3>
-
    <br>
-       <img src="<?=base_url('assets/')?>dist/img/logo.png" alt="Logo PDAM" class="brand-image"
+       <img src="<?=base_url('assets/')?>dist/img/logo.png" alt="Logo" class="brand-image"
            style="width:200px">
   </div>
   <div class="card">
@@ -27,7 +24,7 @@
       <form id="submit">
         <div class="row justify-content-center">
             <div class="form-group col-sm-12">
-                <label for="">E-Mail</label>
+                <label for="">Username</label>
                     <input type="username" id="username" class="form-control">
             </div>
             <div class="form-group col-sm-12">
@@ -40,7 +37,6 @@
             <div class="form-group col-sm-12">
             <button type="submit" class="btn btn-primary btn-md col-md-12" id="login">Login</button>
             </div>
-            <a href="<?= base_url('auth/register')?>" class="btn btn-success btn-md col-md-3">Daftar</a>
         </div>
       </form>
     </div>
@@ -105,7 +101,7 @@
                         button: "Lanjutkan",
                         timer:"1000",
                           }).then(function() {
-                              window.location = "<?= base_url('admin/dashboard/')?>";
+                              window.location = "<?= base_url('admin_poli/dashboard/')?>";
                             });
                       break;
                       case '2':
@@ -115,7 +111,7 @@
                         button: "Lanjutkan",
                         timer:"1000",
                           }).then(function() {
-                              window.location = "<?= base_url('penyedia/dashboard/')?>";
+                              window.location = "<?= base_url('admin_registrasi/dashboard/')?>";
                             });
                       break;
                       case '4':

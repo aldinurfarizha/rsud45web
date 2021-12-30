@@ -34,7 +34,7 @@ class Auth extends CI_Controller  {
                 'role_id'=>$row->role_id,
                 'nama_role'=>$row->nama_role,
                 'nama'=>$row->nama,
-                'poli'=>$row->poli_id,
+                'poli_id'=>$row->poli_id,
             );
             echo $row->role_id;
             $this->session->set_userdata($params);
