@@ -42,7 +42,7 @@
                                               ?>
                                               <tr>
                                               <td><?= $no?></td>
-                                              <td><?= $datas->nama_dokter?></td>
+                                              <td><?= $datas->nama?></td>
                                               <td><?= $datas->username?></td>
                                               <td><?= $datas->password?></td>
                                               <td class="text-center"><?= $datas->nama_poli?></td>
@@ -51,8 +51,8 @@
                                                     <span class="badge bg-danger">Tidak Aktif</span><?php } ?>
                                                 </td>
                                               <td style="text-align: center;">
-                                              <button onclick="hapus(<?= $datas->dokter_id?>)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                              <button onclick="edit('<?= $datas->dokter_id?>' , '<?= $datas->nama_dokter?>', '<?= $datas->poli_id?>', '<?= $datas->status?>', '<?= $datas->nama_poli?>', '<?= $datas->username?>', '<?= $datas->password?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
+                                              <button onclick="hapus(<?= $datas->user_id?>)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                              <button onclick="edit('<?= $datas->user_id?>' , '<?= $datas->nama?>', '<?= $datas->poli_id?>', '<?= $datas->status?>', '<?= $datas->nama_poli?>', '<?= $datas->username?>', '<?= $datas->password?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
                                               </td>
                                               </tr>
                                           <?php } ?>

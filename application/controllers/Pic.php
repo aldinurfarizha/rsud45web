@@ -66,23 +66,24 @@ class Pic extends CI_Controller  {
         $username=$this->input->post('username');
         $password=$this->input->post('password');
         $param=array(
-            'nama_dokter'=>$nama_dokter,
+            'nama'=>$nama_dokter,
             'poli_id'=>$poli_id,
             'status'=>$status,
             'username'=>$username,
-            'password'=>$password
+            'password'=>$password,
+            'role_id'=>5
         );
-        $this->Global_model->insert('dokter',$param);
+        $this->Global_model->insert('user',$param);
     }
     public function deletedokter(){
         $id=$this->input->post('id');
         $where=array(
-            'dokter_id'=>$id
+            'user_id'=>$id
         );
         $data=array(
             'hapus'=>1
         );
-        $this->Global_model->update('dokter',$where,$data);
+        $this->Global_model->update('user',$where,$data);
     }
     public function editdokter(){
         $id=$this->input->post('id');
@@ -91,16 +92,16 @@ class Pic extends CI_Controller  {
         $status=$this->input->post('statuss');
         $password=$this->input->post('passwords');
         $where=array(
-            'dokter_id'=>$id
+            'user_id'=>$id
         );
        
         $data=array(
-            'nama_dokter'=>$nama_dokter,
+            'nama'=>$nama_dokter,
             'poli_id'=>$poli_id,
             'status'=>$status,
             'password'=>$password
         );
-        $this->Global_model->update('dokter',$where,$data);
+        $this->Global_model->update('user',$where,$data);
     }
     public function user(){
         $parampoli=array(
@@ -109,7 +110,7 @@ class Pic extends CI_Controller  {
         );
         $data['poli']=$this->Global_model->getiddetail('poli',$parampoli)->result();
         $data['data']=$this->Global_model->getuser()->result();
-        $data['role']=$this->Global_model->get_all('role')->result();
+        $data['role']=$this->Global_model->getrole()->result();
         $this->load->view('pic/user',$data);
     }
     public function edituser($iduser){
@@ -117,12 +118,15 @@ class Pic extends CI_Controller  {
             'hapus'=>0,
             'status'=>1
         );
+        $paramrole=array(
+            'user.role_id <', 5
+        );
         $paramuser=array(
             'user_id'=>$iduser
         );
         $data['poli']=$this->Global_model->getiddetail('poli',$parampoli)->result();
         $data['row']=$this->Global_model->getuserwhere($paramuser)->row();
-        $data['role']=$this->Global_model->get_all('role')->result();
+        $data['role']=$this->Global_model->getrole()->result();
         $this->load->view('pic/edituser',$data);
     }
     public function inputuser(){

@@ -33,11 +33,18 @@ class Global_model extends CI_Model{
     function insertcallback($table,$data){
       return ($this->db->insert($table, $data))  ?   $this->db->insert_id()  :   false;
     }
+    function getrole(){
+       $this->db->select('role.*');
+        $this->db->from('role');
+       $this->db->where('role_id <', 5);
+       return $this->db->get();
+    }
     function getdokter(){
-        $this->db->select('dokter.*, poli.*, dokter.status as status_dokter');
-        $this->db->from('dokter');
-        $this->db->join('poli', 'dokter.poli_id = poli.poli_id', 'left');
-        $this->db->where('dokter.hapus', 0);
+        $this->db->select('user.*, poli.*, user.status as status_dokter');
+        $this->db->from('user');
+        $this->db->join('poli', 'user.poli_id = poli.poli_id', 'left');
+        $this->db->where('user.hapus', 0);
+        $this->db->where('user.role_id', 5);
         return $this->db->get();
     }
     function getuser(){
@@ -45,6 +52,7 @@ class Global_model extends CI_Model{
       $this->db->from('user');
       $this->db->join('poli', 'user.poli_id = poli.poli_id', 'left');
       $this->db->join('role', 'user.role_id = role.role_id', 'left');
+      $this->db->where('user.role_id <', 5);
       return $this->db->get();
   }
   function getuserwhere($param){
