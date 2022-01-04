@@ -43,9 +43,9 @@
                                           foreach($data as $datas){
                                               $no++;
                                               ?>
-                                              <tr>
+                                              <tr class="text-sm">
                                               <td><?= $no?></td>
-                                              <td><?= $datas->nama_pasien.'-'.$datas->no_rm?></td>
+                                              <td><?= $datas->nama_pasien.' <span class="badge badge-primary">'.$datas->no_rm."</span>"?></td>
                                               <td><?= $datas->nama_poli?></td>
                                               <td><?= $datas->cara_bayar?></td>
                                               <td><?= $datas->tipe_pelayanan?></td>
@@ -60,7 +60,7 @@
                                             
                                               <td style="text-align: center;">
                                               <button onclick="hapus(<?= $datas->poli_id?>)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                              <button onclick="edit('<?= $datas->poli_id?>' , '<?= $datas->nama_poli?>', '<?= $datas->max?>', '<?= $datas->status?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
+                                              <button onclick="edit('<?= $datas->poli_id?>' , '<?= $datas->nama_poli?>', '<?= $datas->status?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
                                               </td>
                                               </tr>
                                           <?php } ?>

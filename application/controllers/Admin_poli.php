@@ -10,7 +10,7 @@ class Admin_poli extends CI_Controller  {
         $param=array(
             'poli_id'=>$this->session->userdata('poli_id'),
         );
-        $data['data']=$this->Global_model->getiddetail('register_poli',$param)->result();
+        $data['data']=$this->Global_model->getpasien($param)->result();
         $this->load->view('admin_poli/daftar_pasien',$data);
     }
   
