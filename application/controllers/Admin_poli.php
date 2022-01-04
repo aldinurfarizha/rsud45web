@@ -8,9 +8,9 @@ class Admin_poli extends CI_Controller  {
     }
     public function daftar_pasien(){
         $param=array(
-            'hapus'=>0
+            'poli_id'=>$this->session->userdata('poli_id'),
         );
-        $data['data']=$this->Global_model->getiddetail('poli',$param)->result();
+        $data['data']=$this->Global_model->getiddetail('register_poli',$param)->result();
         $this->load->view('admin_poli/daftar_pasien',$data);
     }
   

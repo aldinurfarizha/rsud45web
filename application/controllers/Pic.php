@@ -118,9 +118,6 @@ class Pic extends CI_Controller  {
             'hapus'=>0,
             'status'=>1
         );
-        $paramrole=array(
-            'user.role_id <', 5
-        );
         $paramuser=array(
             'user_id'=>$iduser
         );

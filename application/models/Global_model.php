@@ -47,6 +47,14 @@ class Global_model extends CI_Model{
         $this->db->where('user.role_id', 5);
         return $this->db->get();
     }
+    function getpasien($where){
+        $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien');
+        $this->db->from('register_poli');
+        $this->db->join('poli', 'register_poli.poli_id = poli.poli_id', 'left');
+        $this->db->join('pasien', 'register_poli.no_rm = pasien.poli_id', 'left');
+        $this->db->where('user.hapus', 0);
+        return $this->db->get();
+    }
     function getuser(){
       $this->db->select('user.*, poli.*, role.*');
       $this->db->from('user');

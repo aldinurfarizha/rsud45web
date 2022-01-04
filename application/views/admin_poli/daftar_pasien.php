@@ -24,11 +24,16 @@
                                         <br>
                                         <table id="table" class="table table-sm table-striped table-bordered no-wrap">
                                         <thead>
-                                            <tr class="text-center">
+                                            <tr class="text-center text-sm">
                                                 <th>No.</th>
-                                                <th>Nama Poli</th>
-                                                <th>Maximal Pelayanan</th>
-                                                <th>Status Poli</th>
+                                                <th>Pasien</th>
+                                                <th>Poli</th>
+                                                <th>Cara Bayar</th>
+                                                <th>Tipe Pelayanan</th>
+                                                <th>Tgl Periksa</th>
+                                                <th>Cara Kunjungan</th>
+                                                <th>Oleh</th>
+                                                <th>Tgl Input</th>
                                                 <th width="100px"><center>Aksi</center></th>
                                             </tr>
                                         </thead>
@@ -40,12 +45,19 @@
                                               ?>
                                               <tr>
                                               <td><?= $no?></td>
+                                              <td><?= $datas->nama_pasien.'-'.$datas->no_rm?></td>
                                               <td><?= $datas->nama_poli?></td>
-                                              <td class="text-center"><?= $datas->max.' (Orang/Hari)'?></td>
-                                              <td class="text-center"><?php if($datas->status){?>
-                                                <span class="badge bg-primary">Aktif</span><?php }else{?>
-                                                    <span class="badge bg-danger">Tidak Aktif</span><?php } ?>
+                                              <td><?= $datas->cara_bayar?></td>
+                                              <td><?= $datas->tipe_pelayanan?></td>
+                                              <td><?= $datas->tanggal_periksa?></td>
+                                              <td><?= $datas->cara_kunjungan?></td>
+                                              <td class="text-center"><?php if($datas->ditambahkan_oleh=='ONLINE'){?>
+                                                <span class="badge bg-success">ONLINE</span><?php }else{?>
+                                                    <span class="badge bg-primary"><?=$datas->ditambahkan_oleh?></span><?php } ?>
                                                 </td>
+                                              <td><?= $datas->tanggal_input?></td>
+
+                                            
                                               <td style="text-align: center;">
                                               <button onclick="hapus(<?= $datas->poli_id?>)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                               <button onclick="edit('<?= $datas->poli_id?>' , '<?= $datas->nama_poli?>', '<?= $datas->max?>', '<?= $datas->status?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
