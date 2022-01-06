@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '36.92.14.249',
-	'username' => 'produksi',
-	'password' => 'pdam123',
-	'database' => 'titip_aldi_rs',
+	'hostname' => '45.156.24.136',
+	'username' => 'root',
+	'password' => '@30Agustus',
+	'database' => 'rsud45',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
