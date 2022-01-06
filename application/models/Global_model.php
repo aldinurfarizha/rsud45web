@@ -48,10 +48,12 @@ class Global_model extends CI_Model{
         return $this->db->get();
     }
     function getpasien($where){
-        $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien');
+        $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien, user.nama as nama_dokter');
         $this->db->from('register_poli');
         $this->db->join('poli', 'register_poli.poli_id = poli.poli_id', 'left');
         $this->db->join('pasien', 'register_poli.no_rm = pasien.no_rm', 'left');
+        $this->db->join('user', 'register_poli.dokter_id = user.user_id', 'left');
+        $this->db->like($where);
         return $this->db->get();
     }
     function getuser(){

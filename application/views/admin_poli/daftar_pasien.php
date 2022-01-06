@@ -2,6 +2,8 @@
 <html>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
+    <link rel="stylesheet" href="<?=base_url('assets/')?>plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="<?=base_url('assets/')?>plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <?php $this->load->view('partials/head.php') ?>
   <?php $this->load->view('partials/navbar.php') ?>
   <?php $this->load->view('partials/leftbar.php') ?>
@@ -10,60 +12,80 @@
       <div class="container-fluid">
           <br>
           <div class="row justify-content-center">
+                <div class="col-sm-6">
+                        <div class="card card-outline card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"> <i class="fa fa-search"></i> Filter Data</h3>
+                            <div class="card-tools">
+      <!-- Collapse Button -->
+      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+    </div>
+                        </div>
+                            <div class="card-body">
+                                <div class="row justify-content-end">
+                                     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
+                                    <i class="fa fa-plus"></i> Tambah Pasien
+                                    </button>
+                                </div>
+                               <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label class="text-sm">No RM</label>
+                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control form-control-sm" name="filter_no_rm" id="filter_no_rm">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                    <label class="text-sm">Status</label>
+                                        <select class="form-control form-control-sm" name="filter_status" id="filter_status">
+                                        <option value="">--Semua--</option>
+                                        <option value="0">Belum Check IN</option>
+                                        <option value="1">Check IN</option>
+                                        <option value="2">Selesai</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                    <label class="text-sm">Tanggal Periksa</label>
+                                        <input type="date" class="form-control form-control-sm" value ="<?php echo date('Y-m-d') ?>" name="filter_tanggal" id="filter_tanggal">
+                                    </div>
+                                     <div class="form-group col-sm-6">
+                                    <label class="text-sm">Di Tambahkan</label>
+                                        <select class="form-control form-control-sm" name="filter_ditambahkan" id="filter_ditambahkan">
+                                        <option value="">--Semua--</option>
+                                        <option value="ONLINE">Online</option>
+                                        <option value="a">Offline</option>
+                                        </select>
+                                    </div>
+                               </div>
+                                    <div class="row justify-content-center">
+                                    <Button class="btn btn-primary btn-sm" onclick="load()"><i class="fa fa-search"></i> Tampilkan</Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <div class="col-sm-12">
                         <div class="card card-dark">
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-money-bill-alt"></i> Daftar Pasien</h3>
                         </div>
                             <div class="card-body">
-                                <div class="row justify-content-end">
-                                    <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
-                                    <i class="fa fa-plus"></i> Tambah Poli
-                                    </button>
-                                </div>
-                                        <br>
-                                        <table id="table" class="table table-sm table-striped table-bordered no-wrap">
+                                 <div id="loading"></div>
+                                        <div id="nodata" class="text-center">-Tidak ada Data-</div>
+                                        <div id="informasi" class="text-center">-Click Tampilkan Di Atas-</div>
+                                        <table id="table" style="display:none; min-width:100%" class="table table-sm table-striped table-bordered no-wrap table-hover">
                                         <thead>
                                             <tr class="text-center text-sm">
-                                                <th>No.</th>
-                                                <th>Pasien</th>
-                                                <th>Poli</th>
+                                                <th>No. Antrian</th>
+                                                <th>Aksi</th>
+                                                <th style="min-width: 200px;">Pasien</th>
+                                                <th>Status</th>
+                                                <th>Dokter</th>
                                                 <th>Cara Bayar</th>
                                                 <th>Tipe Pelayanan</th>
                                                 <th>Tgl Periksa</th>
                                                 <th>Cara Kunjungan</th>
                                                 <th>Oleh</th>
                                                 <th>Tgl Input</th>
-                                                <th width="100px"><center>Aksi</center></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                        <?php 
-                                          $no=0;
-                                          foreach($data as $datas){
-                                              $no++;
-                                              ?>
-                                              <tr class="text-sm">
-                                              <td><?= $no?></td>
-                                              <td><?= $datas->nama_pasien.' <span class="badge badge-primary">'.$datas->no_rm."</span>"?></td>
-                                              <td><?= $datas->nama_poli?></td>
-                                              <td><?= $datas->cara_bayar?></td>
-                                              <td><?= $datas->tipe_pelayanan?></td>
-                                              <td><?= $datas->tanggal_periksa?></td>
-                                              <td><?= $datas->cara_kunjungan?></td>
-                                              <td class="text-center"><?php if($datas->ditambahkan_oleh=='ONLINE'){?>
-                                                <span class="badge bg-success">ONLINE</span><?php }else{?>
-                                                    <span class="badge bg-primary"><?=$datas->ditambahkan_oleh?></span><?php } ?>
-                                                </td>
-                                              <td><?= $datas->tanggal_input?></td>
-
-                                            
-                                              <td style="text-align: center;">
-                                              <button onclick="hapus(<?= $datas->poli_id?>)" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                                              <button onclick="edit('<?= $datas->poli_id?>' , '<?= $datas->nama_poli?>', '<?= $datas->status?>')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit"><i class="fa fa-edit"></i></button>
-                                              </td>
-                                              </tr>
-                                          <?php } ?>
+                                         <tbody id="data">
                                         </tbody>
                                     </table>
                             </div>
@@ -81,7 +103,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header bg-success">
-              <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Tambah Poli</h4>
+              <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Tambah Antrian Pasien</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -90,25 +112,60 @@
             <form id="inputform">
                                 <div class="row">
                                     <div class="form-group col-sm-12">
-                                    <label for="">Nama Poli</label>
-                                        <input type="text" name="nama_poli" class="form-control">
+                                    <label class="text-sm">No Rm - Nama Pasien - Alamat</label>
+                                    <select class="form-control form-control-sm select2 " name="no_rm">
+                                        <option selected value="">Ketik / Pilih</option>
+                                            <?php foreach($pasien as $pasiens){
+                                                ?>
+                                            <option value="<?=$pasiens->no_rm?>"><?=$pasiens->no_rm.' - '.$pasiens->nama.' - '.$pasiens->alamat?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
-                                    <div class="form-group col-sm-12">
-                                    <label for="">Maximal Pelayanan</label>
-                                        <input type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" name="max" class="form-control">
+                                       <div class="form-group col-sm-12">
+                                    <label class="text-sm">Dokter</label>
+                                    <select class="form-control form-control-sm select2" name="dokter_id">
+                                        <option selected value="">Ketik / Pilih</option>
+                                            <?php foreach($dokter as $dokters){
+                                                ?>
+                                            <option value="<?=$dokters->user_id?>"><?=$dokters->nama?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                     <div class="col-sm-12">
-                                    <label for="">Status</label>
-                                        <select class="form-control" name="status" id="">
-                                            <option value="">--Pilih Status Poli--</option>
-                                            <option value="1">Aktif</option>
-                                            <option value="0">Tidak Aktif</option>
+                                    <label class="text-sm">Cara Bayar</label>
+                                        <select class="form-control form-control-sm" name="cara_bayar" id="cara_bayar">
+                                            <option value="">--Pilih Cara Bayar--</option>
+                                            <option value="KREDIT">KREDIT</option>
+                                            <option value="CASH">CASH</option>
+                                            <option value="TRANSFER">TRANSFER</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12">
+                                    <label class="text-sm">Tipe Pelayanan</label>
+                                        <select class="form-control form-control-sm" name="tipe_pelayanan" id="tipe_pelayanan">
+                                            <option value="">--Pilih Tipe Pelayanan--</option>
+                                            <option value="REGULER">REGULER</option>
+                                            <option value="VIP">VIP</option>
+                                            <option value="SUPER VIP">SUPER VIP</option>
+                                        </select>
+                                    </div>
+                                     <div class="col-sm-12">
+                                    <label class="text-sm">Tanggal Periksa</label>
+                                        <input type="date" class="form-control form-control-sm" name="tgl_periksa" id="tgl_periksa">
+                                        </input>
+                                    </div>
+                                     <div class="col-sm-12">
+                                    <label class="text-sm">Cara Kunjungan</label>
+                                        <select class="form-control form-control-sm" name="cara_kunjungan" id="cara_kunjungan">
+                                            <option value="">--Pilih Cara Kunjungan--</option>
+                                            <option value="MANDIRI">MANDIRI</option>
+                                            <option value="DI JEMPUT">DI JEMPUT</option>
                                         </select>
                                     </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-              <button type="submit" id="add" onclick="input()" class="btn btn-primary">Simpan</button>
+              <button type="submit" id="add" onclick="input()" class="btn btn-primary">Tambah</button>
             </div>
             </form>
           </div>
@@ -154,37 +211,115 @@
         </div>
       </div>
 <?php $this->load->view('partials/script.php') ?>
+<script src="<?=base_url('assets/')?>plugins/select2/js/select2.full.min.js"></script>
 <script>
-$('#table').DataTable({
+$('.select2').select2();
+$('#loading').html(loadingeffect);
+$('#loading').hide();
+$('#nodata').hide();
+ function load(){
+    $('#table').show();
+    $('#informasi').hide();
+    $('#nodata').hide();
+    $('#table').DataTable().destroy(); $('#data').html('');
+    var filter_no_rm = $('#filter_no_rm').val();
+    var filter_status = $('#filter_status').val();
+    var filter_tanggal = $('#filter_tanggal').val();
+    var filter_ditambahkan = $('#filter_ditambahkan').val();
+    $.ajax({
+                type  : 'POST',
+                url   : '<?php echo base_url('admin_poli/load_antrian')?>',
+                async : false,
+                data:{
+                    "no_rm":filter_no_rm,
+                    "status":filter_status,
+                    "tanggal_periksa":filter_tanggal,
+                    "ditambahkan_oleh":filter_ditambahkan,
+                  },
+                dataType : 'json',
+                beforeSend: function () {
+                    Pace.restart();
+                    $('#loading').show();
+                },
+                success : function(data){
+                  $('#loading').hide();
+                    var html = '';
+                    var i;
+                    var no=0;
+                    var status;
+                    if(data.length===0){
+                      $('#nodata').show();
+                      $('#table').hide();
+                      return;
+                    }
+                    for(i=0; i<data.length; i++){
+                        no++;
+                        status='';
+                        switch(data[i].status){
+                                case "1":
+                                 status='<span class="badge badge-primary">Check In</span>';
+                                 break;
+                                 case "2":
+                                 status='<span class="badge badge-success">SELESAI</span>';
+                                 break;
+                                 default:
+                                     status='<span class="badge badge-secondary">Belum Check In</span>';
+                                     break;
+
+                        }
+                        html += '<tr class"text-sm">'+
+                                '<td class="text-center">'+no+'</td>'+
+                                '<td class="text-center"><div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
+                                '<div class="dropdown-menu"><a class="dropdown-item" href="<?=base_url("admin/kependudukan/editpenduduk/")?>'+data[i].registrasi_id+'">Edit</a><a class="dropdown-item" href="#" onclick="hapus('+data[i].registrasi_id+')">Hapus</a></div></div></td>'+
+                                '<td>'+data[i].nama_pasien+'</td>'+
+                                '<td class="text-center">'+status+'</td>'+
+                                '<td>'+data[i].nama_dokter+'</td>'+
+                                '<td>'+data[i].cara_bayar+'</td>'+
+                                '<td>'+data[i].tipe_pelayanan+'</td>'+
+                                '<td>'+data[i].tanggal_periksa+'</td>'+
+                                '<td>'+data[i].cara_kunjungan+'</td>'+
+                                '<td>'+data[i].ditambahkan_oleh+'</td>'+
+                                '<td>'+data[i].tanggal_input+'</td>'+
+                                '</tr>';
+                    }
+                    $('#table').show();
+                    $('#data').html(html);
+                    $('#table').DataTable({
+                    "scrollX": true,
+                    searching: false,
+                    dom: 'Bfrtip',
+
+                            });
+                                }
+ 
             });
+   }
         function input(){
         $("#inputform").valid();
         };
         $('#inputform').validate({
             rules: {
-                nama_poli: {
+                no_rm: {
                     required: true,
                 },
-                max: {
-                    required: true,
-                    digits:true
+                dokter_id: {
+                    required: true
                 },
 
-                status: {
+                cara_bayar: {
                     required: true,
                 },
-            },
-            messages: {
-                nama_poli: {
-                    required: "Wajib di Pilih",
+
+                tipe_pelayanan: {
+                    required: true,
                 },
-                max: {
-                    digits: "Isi dengan angka",
-                    required: "Wajib di isi",
+
+                tgl_periksa: {
+                    required: true,
                 },
-                
-                status: {
-                    required: "Wajib di pilih",
+
+                 cara_kunjungan: {
+                    required: true,
                 },
             },
             errorElement: 'span',
@@ -200,7 +335,7 @@ $('#table').DataTable({
             },
             submitHandler: function() {
                 $.ajax({
-              url: "<?= base_url('pic/inputpoli')?>",
+              url: "<?= base_url('admin_poli/input_pasien')?>",
               type:"post",
               data:$('#inputform').serialize(), 
               beforeSend: function () {
