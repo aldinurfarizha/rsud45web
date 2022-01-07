@@ -17,7 +17,7 @@ class Admin_poli extends CI_Controller  {
             'status'=>1,
             'hapus'=>0
         );
-        $data['pasien']=$this->Global_model->get_all('pasien')->result();
+        $data['pasien']=$this->Global_model->getverifiedpasien()->result();
         $data['dokter']=$this->Global_model->getiddetail('user',$paramdokter)->result();
         $this->load->view('admin_poli/daftar_pasien',$data);
     }
@@ -55,7 +55,8 @@ class Admin_poli extends CI_Controller  {
             'cara_kunjungan'=>$cara_kunjungan,
             'poli_id'=>$poli_id,
             'ditambahkan_oleh'=>$this->session->userdata('nama'),
-            'antrian_no'=>$no_antrian
+            'antrian_no'=>$no_antrian,
+            'online'=>0
             );
             $this->Global_model->insert('register_poli',$data);
             echo '200';
@@ -72,13 +73,14 @@ class Admin_poli extends CI_Controller  {
 		$no_rm=$this->input->post('no_rm');
 		$status=$this->input->post('status');
 		$tanggal_periksa=$this->input->post('tanggal_periksa');
-		$ditambahkan_oleh=$this->input->post('ditambahkan_oleh');
+		$tipe_registrasi=$this->input->post('tipe_registrasi');
+        $poli_id=$this->session->userdata('poli_id');
 		$param=array(
 			'register_poli.no_rm'=>$no_rm,
             'register_poli.status'=>$status,
             'register_poli.tanggal_periksa'=>$tanggal_periksa,
-            'register_poli.ditambahkan_oleh'=>$ditambahkan_oleh
-
+            'register_poli.online'=>$tipe_registrasi,
+            'register_poli.poli_id'=>$poli_id
 		);
         echo json_encode($this->Global_model->getpasien($param)->result()); 
     }
@@ -90,7 +92,7 @@ class Admin_poli extends CI_Controller  {
         $tipe_pelayanan=$this->input->post('tipe_pelayanans');
         $tgl_periksa=$this->input->post('tgl_periksas');
         $cara_kunjungan=$this->input->post('cara_kunjungans');
-        $poli_id=$this->session->userdata('poli_ids');
+        $poli_id=$this->session->userdata('poli_id');
         $data=array(
             'no_rm'=>$no_rm,
             'dokter_id'=>$dokter_id,

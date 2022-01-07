@@ -18,7 +18,6 @@
                             <div class="card-body">
                             <form id="inputform">
                                 <div class="row">
-                                    <?php print_r($row)?>
                                     <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">Nama Lengkap</label>
                                         <input type="text" name="nama" value="<?=@$row->nama?>" class="form-control form-control-sm">

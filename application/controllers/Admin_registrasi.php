@@ -22,6 +22,75 @@ class Admin_registrasi extends CI_Controller  {
         $data['row']=$this->Global_model->getpasieddetail($id)->row();
         $this->load->view('admin_registrasi/edit_pasien',$data);
     }
+    public function verifikasi_online(){
+        $data['agama']=$this->Global_model->get_all('agama')->result();
+        $data['pendidikan']=$this->Global_model->get_all('pendidikan')->result();
+        $data['pekerjaan']=$this->Global_model->get_all('pekerjaan')->result();
+        $data['provinces']=$this->Global_model->get_all('provinces')->result();
+        $data['data']=$this->Global_model->getunverifiedpasien()->result();
+        $this->load->view('admin_registrasi/verifikasi_online',$data);
+    }
+    public function input_pasien_poli(){
+        $no_rm=$this->input->post('no_rm');
+        $dokter_id=$this->input->post('dokter_id');
+        $cara_bayar=$this->input->post('cara_bayar');
+        $tipe_pelayanan=$this->input->post('tipe_pelayanan');
+        $tgl_periksa=$this->input->post('tgl_periksa');
+        $cara_kunjungan=$this->input->post('cara_kunjungan');
+        $poli_id=$this->input->post('poli_id');
+      
+        $paramcheck=array(
+            'tanggal_periksa'=>$tgl_periksa,
+            'poli_id'=>$poli_id
+        );  
+        $paramcheckpasien=array(
+            'tanggal_periksa'=>$tgl_periksa,
+            'no_rm'=>$no_rm,
+            'poli_id'=>$poli_id
+        );
+
+        $check_pasien=$this->Global_model->checkregisterpolipasien($paramcheckpasien);
+        $max_pasien=$this->Global_model->checkmaxregisterpoli($poli_id)->row()->max;
+        $pasien_terdaftar=$this->Global_model->checkregisterpoli($paramcheck);
+        if($pasien_terdaftar<=$max_pasien){
+            if(!$check_pasien){
+            $no_antrian=$pasien_terdaftar+1;
+            $data=array(
+            'no_rm'=>$no_rm,
+            'dokter_id'=>$dokter_id,
+            'cara_bayar'=>$cara_bayar,
+            'tipe_pelayanan'=>$tipe_pelayanan,
+            'tanggal_periksa'=>$tgl_periksa,
+            'cara_kunjungan'=>$cara_kunjungan,
+            'poli_id'=>$poli_id,
+            'ditambahkan_oleh'=>'PIC-'.$this->session->userdata('nama'),
+            'antrian_no'=>$no_antrian,
+            'online'=>0
+            );
+            $this->Global_model->insert('register_poli',$data);
+            echo '200';
+            }else{
+                echo '300';
+            }
+           
+        }else{
+            echo 'Daftar Pasien pada Tanggal tersebut penuh';
+        }
+    }
+    public function daftar_poli($id){
+        $paramdokter=array(
+            'role_id'=>5,
+            'status'=>1,
+            'hapus'=>0
+        );
+        $parampoli=array(
+            'status'=>1,
+            'hapus'=>0
+        );
+        $data['poli']=$this->Global_model->getiddetail('poli',$parampoli)->result();
+        $data['row']=$this->Global_model->getpasieddetail($id)->row();
+        $this->load->view('admin_registrasi/daftar_poli',$data);
+    }
     public function deletepasien(){
         $id=$this->input->post('id');
         $param=array(
@@ -29,6 +98,30 @@ class Admin_registrasi extends CI_Controller  {
         );
         $this->Global_model->delete('pasien',$param);
 
+    }
+    public function terima(){
+        $id=$this->input->post('id');
+        $no_rm=rand(100000,1000000);
+        $where=array(
+            'id'=>$id
+        );
+        $data=array(
+            'no_rm'=>$no_rm,
+            'status'=>1
+        );
+        $this->Global_model->update('pasien', $where,$data);
+    }
+    public function tolak(){
+        $id=$this->input->post('id');
+        $alasan_penolakan=$this->input->post('alasan_penolakan');
+        $where=array(
+            'id'=>$id
+        );
+        $data=array(
+            'alasan_penolakan'=>$alasan_penolakan,
+            'status'=>2
+        );
+        $this->Global_model->update('pasien', $where,$data);
     }
     public function inputpasien(){
         $config['upload_path']=".".BERKAS;
@@ -81,9 +174,10 @@ class Admin_registrasi extends CI_Controller  {
             'ibu_kandung'=>$ibu_kandung,
             'status_martial'=>$status_martial,
 			'file'=>$file,
-            'create_by'=>$nama_admin
+            'create_by'=>$nama_admin,
+            'status'=>1
 		);
-		$this->Global_model->insert('pasien',$data);
+        echo $this->Global_model->insertcallback('pasien',$data);
       
     }
     public function getregencies($id){
@@ -104,6 +198,15 @@ class Admin_registrasi extends CI_Controller  {
             'district_id'=>$id
         );
         echo json_encode($this->Global_model->getiddetail('villages',$param)->result_array());
+    }
+    public function getdokter($id){
+        $param=array(
+            'role_id'=>5,
+            'status'=>1,
+            'hapus'=>0,
+            'poli_id'=>$id
+        );
+        echo json_encode($this->Global_model->getiddetail('user',$param)->result_array());
     }
   
 }

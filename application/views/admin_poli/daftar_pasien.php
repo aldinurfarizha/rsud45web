@@ -27,6 +27,7 @@
                                     <i class="fa fa-plus"></i> Tambah Pasien
                                     </button>
                                     <input type="hidden" value="<?= base_url('admin_poli/display/')?>"id="url">
+                                    <input type="hidden" value="<?= base_url(SOUND)?>"id="audio">
                                 </div>
                                <div class="row">
                                 <div class="form-group col-sm-6">
@@ -47,11 +48,11 @@
                                         <input type="date" class="form-control form-control-sm" value ="<?php echo date('Y-m-d') ?>" name="filter_tanggal" id="filter_tanggal">
                                     </div>
                                      <div class="form-group col-sm-6">
-                                    <label class="text-sm">Di Tambahkan</label>
+                                    <label class="text-sm">Tipe Registrasi</label>
                                         <select class="form-control form-control-sm" name="filter_ditambahkan" id="filter_ditambahkan">
                                         <option value="">--Semua--</option>
-                                        <option value="ONLINE">Online</option>
-                                        <option value="a">Offline</option>
+                                        <option value="1">Online</option>
+                                        <option value="0">Offline</option>
                                         </select>
                                     </div>
                                </div>
@@ -265,7 +266,7 @@ $('#nodata').hide();
                     "no_rm":filter_no_rm,
                     "status":filter_status,
                     "tanggal_periksa":filter_tanggal,
-                    "ditambahkan_oleh":filter_ditambahkan,
+                    "tipe_registrasi":filter_ditambahkan,
                   },
                 dataType : 'json',
                 beforeSend: function () {
@@ -335,12 +336,6 @@ $('#nodata').hide();
                     }
                     $('#table').show();
                     $('#data').html(html);
-                    $('#table').DataTable({
-                    "scrollX": true,
-                    searching: false,
-                    dom: 'Bfrtip',
-
-                            });
                                 }
  
             });
@@ -458,6 +453,9 @@ $('#nodata').hide();
           $('#cara_kunjungans').append('<option selected value="'+cara_kunjungan+'">'+cara_kunjungan+'</option>');
     }
     function panggil(antrian_no, nama){
+
+        var audio = new Audio($('#audio').val());
+        audio.play();
         var url = $('#url').val()+antrian_no+'/'+nama+'/';
         popup(url);
     }

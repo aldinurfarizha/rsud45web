@@ -472,7 +472,7 @@ $('#table').DataTable({
                         icon: "success",
                         button: "Lanjut",
                           }).then(function() {
-                            location.reload();
+                            window.location.href = "<?= base_url('admin_registrasi/daftar_poli/')?>"+data;
                             });
             }, error:function(data){
                   Swal.fire({
