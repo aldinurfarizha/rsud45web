@@ -5,21 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         div {
-        width: 320px;
+        width: 500px;
         padding: 10px;
         border: 5px solid white;
         margin: 0;
         }
+        .blink {
+        animation: blink 1s steps(1, end) 3;
+        }
+
+        @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+        }
+
     </style>
     </style>
     <title>ANTRIAN</title>
 </head>
-<body style="background-color:aquamarine">
+<body  class="blink" style="background-color:aquamarine">
     <center>
-        <h2><?=APP_NAME?></h2>
-        <h3>Poli Gigi dan Mulut</h3>
+        <h1><?=APP_NAME?></h1>
+        <h1>Poli Gigi dan Mulut</h1>
         <div>
-            <h3>No Antrian:<h1>30</h1></h3>
+            <h1>No Antrian:<h1><?=$no_antrian?></h1></h1>
+            <h1><?=$nama_pasien?></h1>
         </div>
     </center>
 </body>

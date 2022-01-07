@@ -26,9 +26,7 @@
                                      <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-plus"></i> Tambah Pasien
                                     </button>
-                                    <button type="button" onclick="popup('display')" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-eye"></i> Display
-                                    </button>
+                                    <input type="hidden" value="<?= base_url('admin_poli/display/')?>"id="url">
                                 </div>
                                <div class="row">
                                 <div class="form-group col-sm-6">
@@ -305,7 +303,7 @@ $('#nodata').hide();
                                  button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
                                             '<div class="dropdown-menu">'+
                                             '<a class="dropdown-item" href="#" onclick="selesai('+data[i].registrasi_id+')">Selesai</a>'+
-                                            '<a class="dropdown-item" href="#" onclick="panggil('+data[i].registrasi_id+')">Panggil</a>'+
+                                            '<a class="dropdown-item" href="#" onclick="panggil(\'' +data[i].antrian_no+ '\',\'' +data[i].nama_pasien+ '\')">Panggil</a>'+
                                             '</div></div>';
                                  break;
 
@@ -320,7 +318,7 @@ $('#nodata').hide();
                                  break;
                         }
                         html += '<tr class"text-sm">'+
-                                '<td class="text-center">'+no+'</td>'+
+                                '<td class="text-center">'+data[i].antrian_no+'</td>'+
                                 '<td class="text-center">'+
                                 button+
                                 '</td>'+
@@ -458,6 +456,10 @@ $('#nodata').hide();
           $('#tipe_pelayanans').append('<option selected value="'+tipe_pelayanan+'">'+tipe_pelayanan+'</option>');
           $('#tgl_periksas').val(tgl_periksa);
           $('#cara_kunjungans').append('<option selected value="'+cara_kunjungan+'">'+cara_kunjungan+'</option>');
+    }
+    function panggil(antrian_no, nama){
+        var url = $('#url').val()+antrian_no+'/'+nama+'/';
+        popup(url);
     }
     function doedit(){
         $("#editform").valid();

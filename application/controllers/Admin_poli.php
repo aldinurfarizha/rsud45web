@@ -137,8 +137,9 @@ class Admin_poli extends CI_Controller  {
             );
             $this->Global_model->update('register_poli', $where, $data);
         }
-        function display($no_antrian){
+        function display($no_antrian,$nama_pasien){
             $data['no_antrian']=$no_antrian;
+            $data['nama_pasien']=urldecode($nama_pasien);
             $this->load->view('admin_poli/display',$data);
         }
   
