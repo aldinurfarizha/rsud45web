@@ -26,6 +26,9 @@
                                      <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-plus"></i> Tambah Pasien
                                     </button>
+                                    <button type="button" onclick="popup('display')" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i> Display
+                                    </button>
                                 </div>
                                <div class="row">
                                 <div class="form-group col-sm-6">
@@ -151,7 +154,7 @@
                                     </div>
                                      <div class="col-sm-12">
                                     <label class="text-sm">Tanggal Periksa</label>
-                                        <input type="date" class="form-control form-control-sm" name="tgl_periksa" id="tgl_periksa">
+                                        <input type="date" class="form-control form-control-sm"  name="tgl_periksa" id="tgl_periksa">
                                         </input>
                                     </div>
                                      <div class="col-sm-12">
@@ -183,28 +186,58 @@
                 </button>
                 </div>
                 <div class="modal-body">
-            
-                                    <div class="row">
-                                        <div class="form-group col-sm-12">
-                                        <label for="">Nama Poli</label>
-                                            <input type="hidden" id="id" name="id" class="form-control" required>
-                                            <input type="text" id="nama_polis" name="nama_polis" class="form-control" required>
-                                        </div>
-                                        <div class="form-group col-sm-12">
-                                        <label for="">Maximal Pelayanan</label>
-                                            <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" id="maxs" name="maxs" class="form-control" required>
-                                        </div>
-                                        <div class="form-group col-sm-12">
-                                        <label for="">Status</label>
-                                            <select name="statuss" id="statuss" class="form-control">
-                                            </select>
-                                        </div>
+             <div class="row">
+                                    <div class="form-group col-sm-12">
+                                    <label class="text-sm">No Rm - Nama Pasien - Alamat</label>
+                                    <input type="hidden" class="form-control" id="ids" name="ids">
+                                    <select class="form-control form-control-sm select2 " name="no_rms" id="no_rms">
+                                            <?php foreach($pasien as $pasiens){
+                                                ?>
+                                            <option value="<?=$pasiens->no_rm?>"><?=$pasiens->no_rm.' - '.$pasiens->nama.' - '.$pasiens->alamat?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
-                                
+                                       <div class="form-group col-sm-12">
+                                    <label class="text-sm">Dokter</label>
+                                    <select class="form-control form-control-sm select2" name="dokter_ids" id="dokter_ids">
+                                            <?php foreach($dokter as $dokters){
+                                                ?>
+                                            <option value="<?=$dokters->user_id?>"><?=$dokters->nama?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12">
+                                    <label class="text-sm">Cara Bayar</label>
+                                        <select class="form-control form-control-sm" name="cara_bayars" id="cara_bayars">
+                                            <option value="KREDIT">KREDIT</option>
+                                            <option value="CASH">CASH</option>
+                                            <option value="TRANSFER">TRANSFER</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12">
+                                    <label class="text-sm">Tipe Pelayanan</label>
+                                        <select class="form-control form-control-sm" name="tipe_pelayanans" id="tipe_pelayanans">
+                                            <option value="REGULER">REGULER</option>
+                                            <option value="VIP">VIP</option>
+                                            <option value="SUPER VIP">SUPER VIP</option>
+                                        </select>
+                                    </div>
+                                     <div class="col-sm-12">
+                                    <label class="text-sm">Tanggal Periksa</label>
+                                        <input type="date" class="form-control form-control-sm" name="tgl_periksas" id="tgl_periksas" readonly>
+                                        </input>
+                                    </div>
+                                     <div class="col-sm-12">
+                                    <label class="text-sm">Cara Kunjungan</label>
+                                        <select class="form-control form-control-sm" name="cara_kunjungans" id="cara_kunjungans">
+                                            <option value="MANDIRI">MANDIRI</option>
+                                            <option value="DI JEMPUT">DI JEMPUT</option>
+                                        </select>
+                                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="submit" onclick="doedit()" class="btn btn-primary">Edit</button>
+                <button type="submit" id="btn_edit" onclick="doedit()" class="btn btn-primary">Edit</button>
                 </div>
             </form>
           </div>
@@ -255,22 +288,42 @@ $('#nodata').hide();
                     for(i=0; i<data.length; i++){
                         no++;
                         status='';
+                        button='';
                         switch(data[i].status){
+                                case "0":
+                                status='<span class="badge badge-secondary">Belum Check In</span>';
+                                    button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
+                                        '<div class="dropdown-menu">'+
+                                        '<a class="dropdown-item" href="#" onclick="edit(\'' +data[i].registrasi_id+ '\',\'' +data[i].no_rm+ '\',\'' +data[i].nama_pasien+ '\',\'' +data[i].dokter_id+ '\',\'' +data[i].nama_dokter+ '\',\'' +data[i].cara_bayar+ '\',\'' +data[i].tipe_pelayanan+ '\',\'' +data[i].tanggal_periksa+ '\',\'' +data[i].cara_kunjungan+ '\',\'' +data[i].alamat_pasien+ '\')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit">Edit</a>'+
+                                        '<a class="dropdown-item" href="#" onclick="checkin('+data[i].registrasi_id+')">Check In</a>'+
+                                        '<a class="dropdown-item" href="#" onclick="batal('+data[i].registrasi_id+')">Batal Periksa</a>'+
+                                        '</div></div>';
+                                    break;
+
                                 case "1":
                                  status='<span class="badge badge-primary">Check In</span>';
+                                 button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
+                                            '<div class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="#" onclick="selesai('+data[i].registrasi_id+')">Selesai</a>'+
+                                            '<a class="dropdown-item" href="#" onclick="panggil('+data[i].registrasi_id+')">Panggil</a>'+
+                                            '</div></div>';
                                  break;
+
                                  case "2":
+                                 button='';
                                  status='<span class="badge badge-success">SELESAI</span>';
                                  break;
-                                 default:
-                                     status='<span class="badge badge-secondary">Belum Check In</span>';
-                                     break;
-
+                                
+                                 case "9":
+                                 button='';
+                                 status='<span class="badge badge-danger">BATAL</span>';
+                                 break;
                         }
                         html += '<tr class"text-sm">'+
                                 '<td class="text-center">'+no+'</td>'+
-                                '<td class="text-center"><div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
-                                '<div class="dropdown-menu"><a class="dropdown-item" href="<?=base_url("admin/kependudukan/editpenduduk/")?>'+data[i].registrasi_id+'">Edit</a><a class="dropdown-item" href="#" onclick="hapus('+data[i].registrasi_id+')">Hapus</a></div></div></td>'+
+                                '<td class="text-center">'+
+                                button+
+                                '</td>'+
                                 '<td>'+data[i].nama_pasien+'</td>'+
                                 '<td class="text-center">'+status+'</td>'+
                                 '<td>'+data[i].nama_dokter+'</td>'+
@@ -348,17 +401,42 @@ $('#nodata').hide();
                   allowOutsideClick: false,
                   });
               },
-               success: function(data){
-                $("#add").attr("disabled", false);
-                $('#inputform').trigger("reset");
-                Swal.fire({
+               success: function(response){
+                switch(response){
+                     case '200':
+                    $("#add").attr("disabled", false);
+                    $('#inputform').trigger("reset");
+                    $('#modal-default').modal('hide');
+                        Swal.fire({
                         title: "Berhasil",
                         text: "Data Telah Berhasil di input",
                         icon: "success",
                         button: "Lanjut",
                           }).then(function() {
-                            location.reload();
+                            load();
                             });
+                        break;
+                        case '300':
+                    $("#add").attr("disabled", false);
+                        Swal.fire({
+                      title: "Gagal",
+                        text: "Pasien Sudah Terdaftar pada tanggal Tersebut !",
+                        icon: "error",
+                        button: "Lanjut",
+                          });
+                        break;
+                     default:
+                          $("#add").attr("disabled", false);
+                        Swal.fire({
+                        title: "Gagal",
+                        text: "Daftar Pasien pada tanggal tersebut penuh!",
+                        icon: "error",
+                        button: "OK",
+                          })
+                        break;
+                }
+
+                
             }, error:function(data){
                 $("#add").attr("disabled", false);
                   Swal.fire({
@@ -372,45 +450,37 @@ $('#nodata').hide();
                 }
             
         });
-        function edit(id,nama_poli, max, status){
-        var strstatus;
-        if(status){strstatus='Aktif'}else{strstatus='Tidak Aktif'};
-        $('#id').val(id);
-        $('#nama_polis').val(nama_poli);
-        $('#maxs').val(max);
-        $('#statuss').empty();
-        $('#statuss').append('<option selected value="'+status+'">'+strstatus+'</option>');
-        $('#statuss').append('<option value="1">Aktif</option>');
-        $('#statuss').append('<option value="0">Tidak Aktif</option>');
+        function edit(id,no_rm,nama_pasien, dokter_id, nama_dokter, cara_bayar, tipe_pelayanan, tgl_periksa, cara_kunjungan, alamat){
+          $('#ids').val(id);
+          $('#no_rms').append('<option selected value="'+no_rm+'">'+no_rm+' - '+nama_pasien+' - '+alamat+'</option>');
+          $('#dokter_ids').append('<option selected value="'+dokter_id+'">'+nama_dokter+'</option>');
+          $('#cara_bayars').append('<option selected value="'+cara_bayar+'">'+cara_bayar+'</option>');
+          $('#tipe_pelayanans').append('<option selected value="'+tipe_pelayanan+'">'+tipe_pelayanan+'</option>');
+          $('#tgl_periksas').val(tgl_periksa);
+          $('#cara_kunjungans').append('<option selected value="'+cara_kunjungan+'">'+cara_kunjungan+'</option>');
     }
     function doedit(){
         $("#editform").valid();
         };
         $('#editform').validate({
             rules: {
-                nama_polis: {
+                no_rms: {
                     required: true,
                 },
-                maxs: {
-                    required: true,
-                    digits:true
-                },
-
-                statuss: {
+                dokter_ids: {
                     required: true,
                 },
-            },
-            messages: {
-                nama_polis: {
-                    required: "Wajib di Pilih",
+                cara_bayars: {
+                    required: true,
                 },
-                maxs: {
-                    digits: "Isi dengan angka",
-                    required: "Wajib di isi",
+                tipe_pelayanans: {
+                    required: true,
                 },
-                
-                statuss: {
-                    required: "Wajib di pilih",
+                tgl_periksas: {
+                    required: true,
+                },
+                cara_kunjungan: {
+                    required: true,
                 },
             },
             errorElement: 'span',
@@ -426,10 +496,11 @@ $('#nodata').hide();
             },
             submitHandler: function() {
                 $.ajax({
-              url: "<?= base_url('pic/editpoli')?>",
+              url: "<?= base_url('admin_poli/edit')?>",
               type:"post",
               data:$('#editform').serialize(), 
               beforeSend: function () {
+                  $("#btn_edit").attr("disabled", true);
                   Swal.fire({
                   title: 'Sedang Proses',
                   html: loadingeffect,
@@ -440,16 +511,18 @@ $('#nodata').hide();
               },
                success: function(data){
                 $('#editform').trigger("reset");
+                $("#btn_edit").attr("disabled", false);
+                $('#edit').modal('hide');
                 Swal.fire({
                         title: "Berhasil",
                         text: "Data Telah Berhasil di edit",
                         icon: "success",
                         button: "Lanjut",
                           }).then(function() {
-                            location.reload();
+                            load();
                             });
             }, error:function(data){
-                $("#add").attr("disabled", false);
+                   $("#btn_edit").attr("disabled", false);
                   Swal.fire({
                     type: 'warning',
                     title: 'Opps!',
@@ -461,6 +534,111 @@ $('#nodata').hide();
                 }
             
         });
+        function checkin(id){
+            $.ajax({
+                    url: "<?= base_url('admin_poli/checkin')?>",
+                    type:"post",
+                    data: {
+                        "id": id,
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                        title: 'Sedang Proses',
+                        html: loadingeffect,
+                        showConfirmButton: false,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        });
+                    },
+                    success: function(data){
+                        Swal.fire({
+                                title: "Berhasil",
+                                text: "Check In",
+                                icon: "success",
+                                timer:"500",
+                                }).then(function() {
+                                    load();
+                                    });
+                    }, error:function(data){
+                        Swal.fire({
+                            type: 'warning',
+                            title: 'Opps!',
+                            text: 'Server Dalam Perbaikan'
+                        });
+                    }
+                });
+};
+        function selesai(id){
+            $.ajax({
+                    url: "<?= base_url('admin_poli/selesai')?>",
+                    type:"post",
+                    data: {
+                        "id": id,
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                        title: 'Sedang Proses',
+                        html: loadingeffect,
+                        showConfirmButton: false,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        });
+                    },
+                    success: function(data){
+                        Swal.fire({
+                                title: "Berhasil",
+                                text: "Selesai",
+                                icon: "success",
+                                timer:"500",
+                                }).then(function() {
+                                    load();
+                                    });
+                    }, error:function(data){
+                        Swal.fire({
+                            type: 'warning',
+                            title: 'Opps!',
+                            text: 'Server Dalam Perbaikan'
+                        });
+                    }
+                });
+};
+function batal(id){
+            $.ajax({
+                    url: "<?= base_url('admin_poli/batal')?>",
+                    type:"post",
+                    data: {
+                        "id": id,
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                        title: 'Sedang Proses',
+                        html: loadingeffect,
+                        showConfirmButton: false,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        });
+                    },
+                    success: function(data){
+                        Swal.fire({
+                                title: "Berhasil",
+                                text: "BATAL",
+                                icon: "success",
+                                timer:"500",
+                                }).then(function() {
+                                    load();
+                                    });
+                    }, error:function(data){
+                        Swal.fire({
+                            type: 'warning',
+                            title: 'Opps!',
+                            text: 'Server Dalam Perbaikan'
+                        });
+                    }
+                });
+};
+function popup(url){
+  window.open(url,'popUpWindow','height=400,width=600,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+}
         function hapus(id){
             Swal.fire({
                 icon: 'question',

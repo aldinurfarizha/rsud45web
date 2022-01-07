@@ -47,8 +47,20 @@ class Global_model extends CI_Model{
         $this->db->where('user.role_id', 5);
         return $this->db->get();
     }
+    function checkregisterpoli($param){
+      return $this->db->where($param)->from('register_poli')->count_all_results();
+    }
+    function checkregisterpolipasien($param){
+      return $this->db->where($param)->from('register_poli')->count_all_results();
+    }
+    function checkmaxregisterpoli($poli_id){
+      $this->db->select('max');
+              $this->db->where('poli_id',$poli_id);
+              $this->db->from('poli');
+              return $this->db->get();
+    }
     function getpasien($where){
-        $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien, user.nama as nama_dokter');
+        $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien,pasien.alamat as alamat_pasien, user.nama as nama_dokter');
         $this->db->from('register_poli');
         $this->db->join('poli', 'register_poli.poli_id = poli.poli_id', 'left');
         $this->db->join('pasien', 'register_poli.no_rm = pasien.no_rm', 'left');
