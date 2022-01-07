@@ -48,6 +48,40 @@ switch ($role_id){
   </aside>
   <?php 
   break;
+  case '3';
+  ?>
+<aside class="main-sidebar sidebar-light-dark elevation-4">
+    <a href="index3.html" class="brand-link text-center bg-primary">
+      <span class="brand-text font-weight-light"><b><?=APP_NAME?></b></span>
+    </a>
+    <div class="sidebar">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="info ">
+          <a href="#" class="d-block text-lg"><?=$this->session->userdata('nama');?></a>
+          <span class="badge badge-success"><?=$this->session->userdata('nama_role')?></span>
+        </div>
+      </div>
+
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item">
+            <a href="<?=base_url('catatan_medis/daftar_pasien')?>" class="nav-link <?php if($this->uri->segment('2')=='poli') { echo"active";}?>">
+              <i class="nav-icon fas fa-user-check"></i>
+              <p>
+                Daftar Pasien
+              </p>
+            </a>
+          </li>
+          <li class="nav-item text-center">
+            <a href="#" id="logout" class="btn bg-danger">Log Out <i class="nav-icon fas fa-power-off"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  <?php 
+  break;
  case '4';
   ?>
 <aside class="main-sidebar sidebar-light-dark elevation-4">

@@ -22,26 +22,19 @@
     </div>
                         </div>
                             <div class="card-body">
-                                <div class="row justify-content-end">
-                                     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
-                                    <i class="fa fa-plus"></i> Tambah Pasien
-                                    </button>
-                                    <input type="hidden" value="<?= base_url('admin_poli/display/')?>"id="url">
-                                    <input type="hidden" value="<?= base_url(SOUND)?>"id="audio">
-                                    <input type="hidden" value ="<?php echo date('Y-m-d') ?>" id="tanggals">
-                                </div>
                                <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label class="text-sm">No RM</label>
                                         <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control form-control-sm" name="filter_no_rm" id="filter_no_rm">
                                     </div>
                                     <div class="form-group col-sm-6">
-                                    <label class="text-sm">Status</label>
+                                    <label class="text-sm">Status Catatan medis</label>
                                         <select class="form-control form-control-sm" name="filter_status" id="filter_status">
                                         <option value="">--Semua--</option>
-                                        <option value="0">Belum Check IN</option>
-                                        <option value="1">Check IN</option>
-                                        <option value="2">Selesai</option>
+                                        <option value="0">Belum Respon</option>
+                                        <option value="1">Di Cari</option>
+                                        <option value="2">Di Kirim</option>
+                                        <option value="9">Tidak Di Temukan</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-sm-6">
@@ -77,8 +70,11 @@
                                             <tr class="text-center text-sm">
                                                 <th>No. Antrian</th>
                                                 <th>Aksi</th>
+                                                <th>Status C.Medis</th>
                                                 <th style="min-width: 200px;">Pasien</th>
+                                                <th>No RM</th>
                                                 <th>Status</th>
+                                                <th>Nama Poli</th>
                                                 <th>Dokter</th>
                                                 <th>Cara Bayar</th>
                                                 <th>Tipe Pelayanan</th>
@@ -102,147 +98,6 @@
   <aside class="control-sidebar control-sidebar-dark">
   </aside>
 </div>
-<div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header bg-success">
-              <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Tambah Antrian Pasien</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-            <form id="inputform">
-                                <div class="row">
-                                    <div class="form-group col-sm-12">
-                                    <label class="text-sm">No Rm - Nama Pasien - Alamat</label>
-                                    <select class="form-control form-control-sm select2 " name="no_rm">
-                                        <option selected value="">Ketik / Pilih</option>
-                                            <?php foreach($pasien as $pasiens){
-                                                ?>
-                                            <option value="<?=$pasiens->no_rm?>"><?=$pasiens->no_rm.' - '.$pasiens->nama.' - '.$pasiens->alamat?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                       <div class="form-group col-sm-12">
-                                    <label class="text-sm">Dokter</label>
-                                    <select class="form-control form-control-sm select2" name="dokter_id">
-                                        <option selected value="">Ketik / Pilih</option>
-                                            <?php foreach($dokter as $dokters){
-                                                ?>
-                                            <option value="<?=$dokters->user_id?>"><?=$dokters->nama?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-12">
-                                    <label class="text-sm">Cara Bayar</label>
-                                        <select class="form-control form-control-sm" name="cara_bayar" id="cara_bayar">
-                                            <option value="">--Pilih Cara Bayar--</option>
-                                            <option value="KREDIT">KREDIT</option>
-                                            <option value="CASH">CASH</option>
-                                            <option value="TRANSFER">TRANSFER</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-12">
-                                    <label class="text-sm">Tipe Pelayanan</label>
-                                        <select class="form-control form-control-sm" name="tipe_pelayanan" id="tipe_pelayanan">
-                                            <option value="">--Pilih Tipe Pelayanan--</option>
-                                            <option value="REGULER">REGULER</option>
-                                            <option value="VIP">VIP</option>
-                                            <option value="SUPER VIP">SUPER VIP</option>
-                                        </select>
-                                    </div>
-                                     <div class="col-sm-12">
-                                    <label class="text-sm">Tanggal Periksa</label>
-                                        <input type="date" class="form-control form-control-sm"  name="tgl_periksa" id="tgl_periksa">
-                                        </input>
-                                    </div>
-                                     <div class="col-sm-12">
-                                    <label class="text-sm">Cara Kunjungan</label>
-                                        <select class="form-control form-control-sm" name="cara_kunjungan" id="cara_kunjungan">
-                                            <option value="">--Pilih Cara Kunjungan--</option>
-                                            <option value="MANDIRI">MANDIRI</option>
-                                            <option value="DI JEMPUT">DI JEMPUT</option>
-                                        </select>
-                                    </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-              <button type="submit" id="add" onclick="input()" class="btn btn-primary">Tambah</button>
-            </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-      <div class="modal fade" id="edit">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <form id="editform">
-                <div class="modal-header bg-success">
-                <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Edit</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-             <div class="row">
-                                    <div class="form-group col-sm-12">
-                                    <label class="text-sm">No Rm - Nama Pasien - Alamat</label>
-                                    <input type="hidden" class="form-control" id="ids" name="ids">
-                                    <select class="form-control form-control-sm select2 " name="no_rms" id="no_rms">
-                                            <?php foreach($pasien as $pasiens){
-                                                ?>
-                                            <option value="<?=$pasiens->no_rm?>"><?=$pasiens->no_rm.' - '.$pasiens->nama.' - '.$pasiens->alamat?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                       <div class="form-group col-sm-12">
-                                    <label class="text-sm">Dokter</label>
-                                    <select class="form-control form-control-sm select2" name="dokter_ids" id="dokter_ids">
-                                            <?php foreach($dokter as $dokters){
-                                                ?>
-                                            <option value="<?=$dokters->user_id?>"><?=$dokters->nama?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-12">
-                                    <label class="text-sm">Cara Bayar</label>
-                                        <select class="form-control form-control-sm" name="cara_bayars" id="cara_bayars">
-                                            <option value="KREDIT">KREDIT</option>
-                                            <option value="CASH">CASH</option>
-                                            <option value="TRANSFER">TRANSFER</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-12">
-                                    <label class="text-sm">Tipe Pelayanan</label>
-                                        <select class="form-control form-control-sm" name="tipe_pelayanans" id="tipe_pelayanans">
-                                            <option value="REGULER">REGULER</option>
-                                            <option value="VIP">VIP</option>
-                                            <option value="SUPER VIP">SUPER VIP</option>
-                                        </select>
-                                    </div>
-                                     <div class="col-sm-12">
-                                    <label class="text-sm">Tanggal Periksa</label>
-                                        <input type="date" class="form-control form-control-sm" name="tgl_periksas" id="tgl_periksas" readonly>
-                                        </input>
-                                    </div>
-                                     <div class="col-sm-12">
-                                    <label class="text-sm">Cara Kunjungan</label>
-                                        <select class="form-control form-control-sm" name="cara_kunjungans" id="cara_kunjungans">
-                                            <option value="MANDIRI">MANDIRI</option>
-                                            <option value="DI JEMPUT">DI JEMPUT</option>
-                                        </select>
-                                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="submit" id="btn_edit" onclick="doedit()" class="btn btn-primary">Edit</button>
-                </div>
-            </form>
-          </div>
-        </div>
-      </div>
 <?php $this->load->view('partials/script.php') ?>
 <script src="<?=base_url('assets/')?>plugins/select2/js/select2.full.min.js"></script>
 <script>
@@ -261,7 +116,7 @@ $('#nodata').hide();
     var filter_ditambahkan = $('#filter_ditambahkan').val();
     $.ajax({
                 type  : 'POST',
-                url   : '<?php echo base_url('admin_poli/load_antrian')?>',
+                url   : '<?php echo base_url('catatan_medis/load_antrian')?>',
                 async : false,
                 data:{
                     "no_rm":filter_no_rm,
@@ -288,44 +143,57 @@ $('#nodata').hide();
                     for(i=0; i<data.length; i++){
                         no++;
                         status='';
+                        catatan_medis='';
                         button='';
+                        switch(data[i].catatan_medis){
+                            case "0":
+                                catatan_medis='<span class="badge badge-secondary">Belum Respon</span>'
+                                button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
+                                            '<div class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="#" onclick="dicari('+data[i].registrasi_id+')">Di Cari</a>'+
+                                            '</div></div>';
+                                 break;
+                            case "1":
+                                catatan_medis='<span class="badge badge-primary">Sedang di Cari</span>'
+                                button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
+                                            '<div class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="#" onclick="dikirim('+data[i].registrasi_id+')">Di Kirim</a>'+
+                                            '<a class="dropdown-item" href="#" onclick="tidakditemukan('+data[i].registrasi_id+')">Tidak Di Temukan</a>'+
+                                            '</div></div>';
+                                break;
+                            case "2":
+                                catatan_medis='<span class="badge badge-success">Di Kirim</span>'
+                                button='';
+                            break;
+                            case "9":
+                                catatan_medis='<span class="badge badge-danger">Tidak Ditemukan</span>'
+                                button='';
+                            break;
+                        };
                         switch(data[i].status){
                                 case "0":
                                 status='<span class="badge badge-secondary">Belum Check In</span>';
-                                    button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
-                                        '<div class="dropdown-menu">'+
-                                        '<a class="dropdown-item" href="#" onclick="edit(\'' +data[i].registrasi_id+ '\',\'' +data[i].no_rm+ '\',\'' +data[i].nama_pasien+ '\',\'' +data[i].dokter_id+ '\',\'' +data[i].nama_dokter+ '\',\'' +data[i].cara_bayar+ '\',\'' +data[i].tipe_pelayanan+ '\',\'' +data[i].tanggal_periksa+ '\',\'' +data[i].cara_kunjungan+ '\',\'' +data[i].alamat_pasien+ '\')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit">Edit</a>'+
-                                        '<a class="dropdown-item" href="#" onclick="checkin('+data[i].registrasi_id+')">Check In</a>'+
-                                        '<a class="dropdown-item" href="#" onclick="batal('+data[i].registrasi_id+')">Batal Periksa</a>'+
-                                        '</div></div>';
+                                break;
+                                    case "1":
+                                    status='<span class="badge badge-primary">Check In</span>';
                                     break;
-
-                                case "1":
-                                 status='<span class="badge badge-primary">Check In</span>';
-                                 button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
-                                            '<div class="dropdown-menu">'+
-                                            '<a class="dropdown-item" href="#" onclick="selesai('+data[i].registrasi_id+')">Selesai</a>'+
-                                            '<a class="dropdown-item" href="#" onclick="panggil(\'' +data[i].antrian_no+ '\',\'' +data[i].nama_pasien+ '\')">Panggil</a>'+
-                                            '</div></div>';
-                                 break;
-
-                                 case "2":
-                                 button='';
-                                 status='<span class="badge badge-success">SELESAI</span>';
-                                 break;
-                                
-                                 case "9":
-                                 button='';
-                                 status='<span class="badge badge-danger">BATAL</span>';
-                                 break;
+                                        case "2":
+                                        status='<span class="badge badge-success">SELESAI</span>';
+                                        break;                                
+                                            case "9":
+                                            status='<span class="badge badge-danger">BATAL</span>';
+                                            break;
                         }
                         html += '<tr class"text-sm">'+
                                 '<td class="text-center">'+data[i].antrian_no+'</td>'+
                                 '<td class="text-center">'+
                                 button+
                                 '</td>'+
+                                '<td class="text-center">'+catatan_medis+'</td>'+
                                 '<td>'+data[i].nama_pasien+'</td>'+
+                                '<td>'+data[i].no_rm+'</td>'+
                                 '<td class="text-center">'+status+'</td>'+
+                                '<td>'+data[i].nama_poli+'</td>'+
                                 '<td>'+data[i].nama_dokter+'</td>'+
                                 '<td>'+data[i].cara_bayar+'</td>'+
                                 '<td>'+data[i].tipe_pelayanan+'</td>'+
@@ -454,43 +322,11 @@ $('#nodata').hide();
           $('#cara_kunjungans').append('<option selected value="'+cara_kunjungan+'">'+cara_kunjungan+'</option>');
     }
     function panggil(antrian_no, nama){
-        tgl=$('#tanggals').val();
-        $.ajax({
-                    url: "<?= base_url('admin_poli/update_panggil')?>",
-                    type:"post",
-                    data: {
-                        "tgl": tgl,
-                        "antrian_no":antrian_no
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "Selesai",
-                                icon: "success",
-                                timer:"500",
-                                }).then(function() {
-                                    var audio = new Audio($('#audio').val());
-                                    audio.play();
-                                    var url = $('#url').val()+antrian_no+'/'+nama+'/';
-                                    popup(url);
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
+
+        var audio = new Audio($('#audio').val());
+        audio.play();
+        var url = $('#url').val()+antrian_no+'/'+nama+'/';
+        popup(url);
     }
     function doedit(){
         $("#editform").valid();
@@ -567,9 +403,9 @@ $('#nodata').hide();
                 }
             
         });
-        function checkin(id){
+        function dicari(id){
             $.ajax({
-                    url: "<?= base_url('admin_poli/checkin')?>",
+                    url: "<?= base_url('catatan_medis/dicari')?>",
                     type:"post",
                     data: {
                         "id": id,
@@ -585,8 +421,8 @@ $('#nodata').hide();
                     },
                     success: function(data){
                         Swal.fire({
-                                title: "Berhasil",
-                                text: "Check In",
+                                title: "Prosess",
+                                text: "Di Cari",
                                 icon: "success",
                                 timer:"500",
                                 }).then(function() {
@@ -601,9 +437,9 @@ $('#nodata').hide();
                     }
                 });
 };
-        function selesai(id){
+        function dikirim(id){
             $.ajax({
-                    url: "<?= base_url('admin_poli/selesai')?>",
+                    url: "<?= base_url('catatan_medis/dikirim')?>",
                     type:"post",
                     data: {
                         "id": id,
@@ -619,8 +455,8 @@ $('#nodata').hide();
                     },
                     success: function(data){
                         Swal.fire({
-                                title: "Berhasil",
-                                text: "Selesai",
+                                title: "Proses",
+                                text: "Di Kirim",
                                 icon: "success",
                                 timer:"500",
                                 }).then(function() {
@@ -635,9 +471,9 @@ $('#nodata').hide();
                     }
                 });
 };
-function batal(id){
+function tidakditemukan(id){
             $.ajax({
-                    url: "<?= base_url('admin_poli/batal')?>",
+                    url: "<?= base_url('catatan_medis/tidakditemukan')?>",
                     type:"post",
                     data: {
                         "id": id,
@@ -654,7 +490,7 @@ function batal(id){
                     success: function(data){
                         Swal.fire({
                                 title: "Berhasil",
-                                text: "BATAL",
+                                text: "Tidak Di Temukan",
                                 icon: "success",
                                 timer:"500",
                                 }).then(function() {
@@ -672,54 +508,7 @@ function batal(id){
 function popup(url){
   window.open(url,'popUpWindow','height=400,width=600,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
 }
-        function hapus(id){
-            Swal.fire({
-                icon: 'question',
-                title: 'Hapus',
-                text: 'Anda yakin ingin Menghapus Poli ini ?',
-                showConfirmButton: true,
-                showCancelButton: true,
-                showBackdrop: true,
-                confirmButtonText: 'Ya Hapus',
-                cancelButtonText: 'Tidak'
-            }).then(function(data){
-                if(data.value === true){
-                    $.ajax({
-                    url: "<?= base_url('pic/deletepoli')?>",
-                    type:"post",
-                    data: {
-                        "id": id,
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "Data Telah di hapus",
-                                icon: "success",
-                                button: "Lanjut",
-                                }).then(function() {
-                                    location.reload();
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
-                }
-            });
-            
-};
+     
 </script>
 </body>
 </html>

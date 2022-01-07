@@ -70,6 +70,18 @@ class Global_model extends CI_Model{
         $this->db->order_by('register_poli.antrian_no ASC', );
         return $this->db->get();
     }
+    function getpasiencm($where){
+      $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien,pasien.alamat as alamat_pasien, user.nama as nama_dokter');
+      $this->db->from('register_poli');
+      $this->db->join('poli', 'register_poli.poli_id = poli.poli_id', 'left');
+      $this->db->join('pasien', 'register_poli.no_rm = pasien.no_rm', 'left');
+      $this->db->join('user', 'register_poli.dokter_id = user.user_id', 'left');
+      $this->db->like($where);
+      $this->db->order_by('register_poli.catatan_medis ASC', );
+      $this->db->order_by('register_poli.antrian_no ASC', );
+      $this->db->where('register_poli.status', 1);
+      return $this->db->get();
+  }
     function getuser(){
       $this->db->select('user.*, poli.*, role.*');
       $this->db->from('user');

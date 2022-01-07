@@ -114,6 +114,16 @@
                               window.location = "<?= base_url('admin_registrasi/dashboard/')?>";
                             });
                       break;
+                      case '3':
+                        Swal.fire({
+                        title: "Berhasil",
+                        icon: "success",
+                        button: "Lanjutkan",
+                        timer:"1000",
+                          }).then(function() {
+                              window.location = "<?= base_url('catatan_medis/daftar_pasien/')?>";
+                            });
+                      break;
                       case '4':
                         Swal.fire({
                         title: "Berhasil",

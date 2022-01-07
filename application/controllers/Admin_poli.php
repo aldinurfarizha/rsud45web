@@ -69,6 +69,17 @@ class Admin_poli extends CI_Controller  {
         }
         
     }
+        function update_panggil(){
+            $poli_id=$this->session->userdata('poli_id');
+            $antrian_no=$this->input->post('antrian_no');
+            $tgl=$this->input->post('tgl');
+            $data=array(
+                'poli_id'=>$poli_id,
+                'antrian_no'=>$antrian_no,
+                'tgl'=>$tgl
+            );
+            $this->Global_model->replace('temp_antrian', $data);
+        }
     	function load_antrian(){
 		$no_rm=$this->input->post('no_rm');
 		$status=$this->input->post('status');
