@@ -66,8 +66,8 @@ class Global_model extends CI_Model{
         $this->db->join('pasien', 'register_poli.no_rm = pasien.no_rm', 'left');
         $this->db->join('user', 'register_poli.dokter_id = user.user_id', 'left');
         $this->db->like($where);
-        $this->db->order_by('register_poli.status ASC', );
-        $this->db->order_by('register_poli.antrian_no ASC', );
+        $this->db->order_by('register_poli.status', 'ASC');
+        $this->db->order_by('register_poli.antrian_no', 'ASC' );
         return $this->db->get();
     }
     function getpasiencm($where){
@@ -77,8 +77,8 @@ class Global_model extends CI_Model{
       $this->db->join('pasien', 'register_poli.no_rm = pasien.no_rm', 'left');
       $this->db->join('user', 'register_poli.dokter_id = user.user_id', 'left');
       $this->db->like($where);
-      $this->db->order_by('register_poli.catatan_medis ASC', );
-      $this->db->order_by('register_poli.antrian_no ASC', );
+      $this->db->order_by('register_poli.catatan_medis','ASC' );
+      $this->db->order_by('register_poli.antrian_no', 'ASC' );
       $this->db->where('register_poli.status', 1);
       return $this->db->get();
   }
