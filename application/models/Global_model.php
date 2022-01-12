@@ -137,6 +137,24 @@ function getpasieddetail($id){
   $this->db->where('pasien.id', $id);
   return $this->db->get();
 }
+function total_pasien_hari($day, $poli_id){
+  $year=date('Y');
+  $month=date('m');
+  $date=$year.'-'.$month.'-'.$day;
+  $param=array(
+    'tanggal_periksa'=>$date,
+    'poli_id'=>$poli_id
+  );
+  return $this->db->where($param)->from('register_poli')->count_all_results();
+}
+function total_register_hari($day){
+  $year=date('Y');
+  $month=date('m');
+  $date_awal='"'.$year.'-'.$month.'-'.$day.' 00:00:00'.'"';
+  $day++;
+  $date_akhir='"'.$year.'-'.$month.'-'.$day.' 00:00:00'.'"';
+  return $this->db->query('SELECT COUNT(id) as total FROM pasien WHERE created_at >='.$date_awal.' AND created_at <'.$date_akhir)->row()->total;
+}
    
     function count_dashboard_admin(){
       $param=array(

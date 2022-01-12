@@ -1,3 +1,7 @@
+<?php
+$model =& get_instance();
+$model->load->model('Global_model');
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,7 +37,15 @@
 <body  class="blink" style="background-color:aquamarine">
     <center>
         <h1><?=APP_NAME?></h1>
-        <h1>Poli Gigi dan Mulut</h1>
+        <h1><?php
+        if($this->session->userdata('role_id')=="1"){
+          $poli_id=$this->session->userdata('poli_id');
+          $param=array(
+            'poli_id'=>$poli_id
+          );
+        echo $this->Global_model->getiddetail('poli',$param)->row()->nama_poli;
+        }
+        ;?></h1>
         <div>
             <h1>No Antrian:<h1><?=$no_antrian?></h1></h1>
             <h1><?=$nama_pasien?></h1>
