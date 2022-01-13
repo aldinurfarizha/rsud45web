@@ -210,13 +210,14 @@ class Pic extends CI_Controller  {
         $status=$this->input->post('status');
         $bulan=$this->input->post('bulan');
         $tahun=$this->input->post('tahun');
-        $date=$tahun.'-'.$bulan.'-';
+        $date=$tahun.'-'.$bulan;
         $param=array(
             'register_poli.poli_id'=>$poli_id,
             'register_poli.status'=>$status,
             'register_poli.tanggal_periksa'=>$date
         );
         $data['data']=$this->Global_model->getpasien($param)->result();
+        $data['date']=$date;
          $this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
 	    $this->pdf->setPaper('A4', 'potrait');

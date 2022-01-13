@@ -12,8 +12,8 @@
 	},
 	"require": {
 		"php": ">=5.3.7",
-		"dompdf/dompdf": "0.8.0 as 0.6.2",
-		"myclabs/deep-copy": "1.8.0"
+		"myclabs/deep-copy": "1.8.0",
+		"dompdf/dompdf": "^1.1"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
