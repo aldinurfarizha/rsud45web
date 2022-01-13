@@ -196,7 +196,32 @@ class Pic extends CI_Controller  {
             'no_telp'=>$no_telp
         );
         $this->Global_model->update('user',$where,$data);
-
+    }
+       public function laporan_poli(){
+        $parampoli=array(
+        );
+        $data['data']=$this->Global_model->getdokter()->result();
+        $data['poli']=$this->Global_model->getiddetail('poli',$parampoli)->result();
+        $this->load->view('pic/laporan_poli_filter', $data);
+    }
+    public function laporan_poli_pdf(){
+        $this->load->library('pdf');
+        $poli_id=$this->input->post('poli_id');
+        $status=$this->input->post('status');
+        $bulan=$this->input->post('bulan');
+        $tahun=$this->input->post('tahun');
+        $date=$tahun.'-'.$bulan.'-';
+        $param=array(
+            'register_poli.poli_id'=>$poli_id,
+            'register_poli.status'=>$status,
+            'register_poli.tanggal_periksa'=>$date
+        );
+        $data['data']=$this->Global_model->getpasien($param)->result();
+         $this->load->library('pdf');
+		$this->pdf->set_option('isRemoteEnabled', true);
+	    $this->pdf->setPaper('A4', 'potrait');
+	    $this->pdf->filename = "Laporan Poli ".date("Y-m-d").".pdf";
+	    $this->pdf->load_view('pic/laporan_poli_pdf',$data);
     }
    
 }

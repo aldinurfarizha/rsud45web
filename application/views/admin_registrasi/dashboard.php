@@ -47,7 +47,6 @@ $total_hari=cal_days_in_month(CAL_GREGORIAN,date('m'),date('Y'));
 for ($x = 1; $x <= $total_hari; $x++) {
  array_push($total_pasien, $model->Global_model->total_register_hari($x));
 };
-print_r ($total_pasien);
 ?>
 <script>
     const jumlah_hari='<?php echo cal_days_in_month(CAL_GREGORIAN,date('m'),date('Y'));?>'

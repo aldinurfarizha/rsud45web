@@ -99,7 +99,7 @@ switch ($role_id){
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-            <a href="<?=base_url('admin/dashboard')?>" class="nav-link <?php if($this->uri->segment('2')=='dashboard') { echo"active";}?>">
+            <a href="<?=base_url('pic/dashboard')?>" class="nav-link <?php if($this->uri->segment('2')=='dashboard') { echo"active";}?>">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard

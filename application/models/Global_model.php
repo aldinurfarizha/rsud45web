@@ -147,6 +147,15 @@ function total_pasien_hari($day, $poli_id){
   );
   return $this->db->where($param)->from('register_poli')->count_all_results();
 }
+function total_pasien_hari_semua($day){
+  $year=date('Y');
+  $month=date('m');
+  $date=$year.'-'.$month.'-'.$day;
+  $param=array(
+    'tanggal_periksa'=>$date,
+  );
+  return $this->db->where($param)->from('register_poli')->count_all_results();
+}
 function total_register_hari($day){
   $year=date('Y');
   $month=date('m');
