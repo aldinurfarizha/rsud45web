@@ -39,6 +39,13 @@ class Global_model extends CI_Model{
        $this->db->where('role_id <', 5);
        return $this->db->get();
     }
+    function login_dokter($param){
+        $this->db->select('user.*, poli.*');
+        $this->db->from('user');
+        $this->db->join('poli', 'user.poli_id = poli.poli_id', 'left');
+        $this->db->where($param);
+        return $this->db->get();
+    }
     function getdokter(){
         $this->db->select('user.*, poli.*, user.status as status_dokter');
         $this->db->from('user');
@@ -58,6 +65,9 @@ class Global_model extends CI_Model{
               $this->db->where('poli_id',$poli_id);
               $this->db->from('poli');
               return $this->db->get();
+    }
+    function countdashboarddokter($where){
+     return $this->db->where($where)->from('register_poli')->count_all_results();
     }
     function getpasien($where){
         $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien,pasien.alamat as alamat_pasien, user.nama as nama_dokter');

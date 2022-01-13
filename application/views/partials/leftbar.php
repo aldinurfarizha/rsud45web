@@ -1,7 +1,5 @@
 <?php 
 $model =& get_instance();
-$model->load->model('M_pengalaman');
-$model->load->model('M_master');
 $role_id=$this->session->userdata('role_id');
 $iduser=$this->session->userdata('iduser');
 
