@@ -69,4 +69,38 @@ class Api extends CI_Controller {
                     )));
             
         }
+        public function login_pasien(){
+            $no_rm=$this->input->post('no_rm');
+            $param=array(
+                'no_rm'=>$no_rm
+            );
+            $data=$this->Global_model->getiddetail('pasien', $param)->row();
+            if($data){
+                    if($data->status!=="2"){
+                        return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array(
+                            'success'=>true,
+                            'data' => $data,                   
+                    )));
+                    }else{
+                    return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array(
+                            'login'=>false,
+                            'message' => 'Akun Anda di nonaktifkan',                   
+                    )));
+                    }
+            }else{
+                    return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array(
+                            'login'=>false,
+                            'message' => 'NO RM tidak ditemukan',                   
+                    )));
+            }
+        }
 }
