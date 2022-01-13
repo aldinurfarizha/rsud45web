@@ -12,7 +12,7 @@
       <div class="container-fluid">
           <br>
           <div class="row justify-content-center">
-                <div class="col-sm-6">
+                <div class="col-sm-9">
                         <div class="card card-outline card-primary">
                         <div class="card-header">
                             <h3 class="card-title"> <i class="fa fa-search"></i> Filter Laporan Poli</h3>
@@ -21,28 +21,18 @@
       <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
     </div>
                         </div>
-                           <form method="post" target="_blank" action="<?=base_url('pic/laporan_poli_pdf')?>">
+                           <form method="post" target="_blank" action="<?=base_url('pic/laporan_registrasi_pdf')?>">
  <div class="card-body">
                                <div class="row">
-                                <div class="form-group col-sm-6">
-                                    <label class="text-sm">Nama Poli</label>
-                                       <select class="form-control form-control-sm" name="nama_poli" id="nama_poli">
-                                        <option value="">--Semua--</option>
-                                        <?php foreach($poli as $polis){ ?>
-                                        <option value="<?=$polis->poli_id?>"><?=$polis->nama_poli?></option>
-                                        <?php } ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                    <label class="text-sm">Status</label>
-                                        <select class="form-control form-control-sm" name="status" id="status">
+                                <div class="form-group col-sm-4">
+                                    <label class="text-sm">Cara Mendaftar</label>
+                                        <select class="form-control form-control-sm" name="cara_daftar" id="cara_daftar">
                                         <option selected value="">--Semua--</option>
-                                        <option value="0">Belum Check IN</option>
-                                        <option value="1">Check IN</option>
-                                        <option value="2">Selesai</option>
+                                        <option value="0">Offline</option>
+                                        <option value="1">Online</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-sm-6">
+                                    <div class="form-group col-sm-4">
                                     <label class="text-sm">Bulan</label>
                                       <select name="bulan" id="bulan" class="form-control form-control-sm" >
                                         <option selected value="">--Semua--</option>
@@ -60,7 +50,7 @@
                                         <option value="12">Desember</option>
                                       </select>
                                     </div>
-                                     <div class="form-group col-sm-6">
+                                     <div class="form-group col-sm-4">
                                     <label class="text-sm">Tahun</label>
                                         <select class="form-control form-control-sm" name="tahun" id="tahun">
                                         <option selected value="">--Semua--</option>

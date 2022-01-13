@@ -204,6 +204,10 @@ class Pic extends CI_Controller  {
         $data['poli']=$this->Global_model->getiddetail('poli',$parampoli)->result();
         $this->load->view('pic/laporan_poli_filter', $data);
     }
+    public function laporan_registrasi(){
+        $data['data']=$this->Global_model->getdokter()->result();
+        $this->load->view('pic/laporan_registrasi_filter', $data);
+    }
     public function laporan_poli_pdf(){
         $this->load->library('pdf');
         $poli_id=$this->input->post('poli_id');
@@ -223,6 +227,25 @@ class Pic extends CI_Controller  {
 	    $this->pdf->setPaper('A4', 'potrait');
 	    $this->pdf->filename = "Laporan Poli ".date("Y-m-d").".pdf";
 	    $this->pdf->load_view('pic/laporan_poli_pdf',$data);
+    }
+
+        public function laporan_registrasi_pdf(){
+        $this->load->library('pdf');
+        $cara_daftar=$this->input->post('cara_daftar');
+        $bulan=$this->input->post('bulan');
+        $tahun=$this->input->post('tahun');
+        $date=$tahun.'-'.$bulan;
+        $param=array(
+            'pasien.is_online'=>$cara_daftar,
+            'pasien.created_at'=>$date
+        );
+        $data['data']=$this->Global_model->getpendaftaranlaporan($param)->result();
+        $data['date']=$date;
+        $this->load->library('pdf');
+		$this->pdf->set_option('isRemoteEnabled', true);
+	    $this->pdf->setPaper('A4', 'potrait');
+	    $this->pdf->filename = "Laporan Registrasi ".date("Y-m-d").".pdf";
+	    $this->pdf->load_view('pic/laporan_registrasi_pdf',$data);
     }
    
 }
