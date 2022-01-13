@@ -69,6 +69,15 @@ class Global_model extends CI_Model{
     function countdashboarddokter($where){
      return $this->db->where($where)->from('register_poli')->count_all_results();
     }
+    function getpasiendetail($where){
+        $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien,pasien.alamat as alamat_pasien, user.nama as nama_dokter');
+        $this->db->from('register_poli');
+        $this->db->join('poli', 'register_poli.poli_id = poli.poli_id', 'left');
+        $this->db->join('pasien', 'register_poli.no_rm = pasien.no_rm', 'left');
+        $this->db->join('user', 'register_poli.dokter_id = user.user_id', 'left');
+        $this->db->where($where);
+        return $this->db->get();
+    }
     function getpasien($where){
         $this->db->select('register_poli.*, poli.nama_poli as nama_poli, pasien.nama as nama_pasien,pasien.alamat as alamat_pasien, user.nama as nama_dokter');
         $this->db->from('register_poli');
