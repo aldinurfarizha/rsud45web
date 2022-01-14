@@ -52,7 +52,7 @@ function status($status){
     <tr>
       <td><?=@$no?></td>
       <td><?=@$datas->nama?></td>
-      <td><?=status(@$datas->status)?></td>
+      <td><?=status(@$datas->is_online)?></td>
       <td><?= @$datas->no_rm?></td>
       <td><?= @$datas->nik?></td>
       <td><?= @$datas->tmplahir?></td>
