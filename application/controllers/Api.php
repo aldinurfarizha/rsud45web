@@ -278,11 +278,29 @@ class Api extends CI_Controller {
         $id=$this->input->post('id');
         $date=date('Y-m-d');
         $param=array(
-                'id'=>$id
+                'registrasi_id'=>$id
         );
         $data=$this->Global_model->getiddetail('register_poli', $param)->row();
         if($data->tanggal_periksa==$date){
-         $antrian=$this->Global_model->check('registrasi')
+        $param=array(
+                'poli_id'=>$data->poli_id
+        );
+         $antrian=$this->Global_model->getiddetail('temp_antrian', $param)->row();
+         return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode(array(
+                        'success'=>true,
+                        'data'=>$antrian
+                )));
+        }else{
+        return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(200)
+                        ->set_output(json_encode(array(
+                                'success'=>false,
+                                'message'=>'Nomor Antrian akan muncul pada Tanggal pemeriksaan'
+                        )));
         }
 
         }
