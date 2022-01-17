@@ -83,7 +83,7 @@
                                 <div class="row">
                                     <div class="form-group col-sm-12">
                                     <label for="">Nama Dokter</label>
-                                        <input type="text" name="nama_dokter" class="form-control">
+                                        <input type="text" onkeypress="return /[a-z]/i.test(event.key)" name="nama_dokter" class="form-control">
                                     </div>
                                     <div class="form-group col-sm-12">
                                     <label for="">Username</label>
@@ -136,7 +136,7 @@
                                         <div class="form-group col-sm-12">
                                         <label for="">Nama Dokter</label>
                                             <input type="hidden" id="id" name="id" class="form-control" required>
-                                            <input type="text" id="nama_dokters" name="nama_dokters" class="form-control" required>
+                                            <input type="text" onkeypress="return /[a-z]/i.test(event.key)" id="nama_dokters" name="nama_dokters" class="form-control" required>
                                         </div>
                                         <div class="form-group col-sm-12">
                                     <label for="">Username</label>
