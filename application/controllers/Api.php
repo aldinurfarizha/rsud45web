@@ -81,8 +81,9 @@ class Api extends CI_Controller {
                     ->set_content_type('application/json')
                     ->set_status_header(200)
                     ->set_output(json_encode(array(
-                            'success'=>true,
-                            'data' => $data,                   
+                            'login'=>true,
+                            'data' => $data,   
+                            'message' => 'Login Berhasil',                  
                     )));
                     }else{
                     return $this->output
