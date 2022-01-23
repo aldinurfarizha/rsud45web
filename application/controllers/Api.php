@@ -104,6 +104,22 @@ class Api extends CI_Controller {
                     )));
             }
         }
+        public function get_dokter(){
+        $poli_id=$this->input->post('poli_id');
+        $param=array(
+                'poli_id'=>$poli_id,
+                'role_id'=>5,
+                'status'=>1,
+        );
+        $dokter=$this->Global_model->getiddetail('user', $param)->result();
+        return $this->output
+        ->set_content_type('application/json')
+        ->set_status_header(200)
+        ->set_output(json_encode(array(
+                'success'=>true,
+                'data'=>$dokter,
+        )));
+        }
         public function dashboard_pasien(){
         $no_rm=$this->input->post('no_rm');
         $parampasien=array(
