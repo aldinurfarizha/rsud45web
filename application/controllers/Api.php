@@ -322,5 +322,19 @@ class Api extends CI_Controller {
         }
 
         }
+        public function batal(){
+        $registrasi_id=$this->input->post('registrasi_id');
+        $where=array(
+                'registrasi_id'=>$registrasi_id
+        );
+        $this->Global_model->delete('register_poli', $where);
+        return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(200)
+                        ->set_output(json_encode(array(
+                                'success'=>true,
+                                'message'=>'Pendaftaran Di batalkan',
+                        )));
+        }
 
 }
