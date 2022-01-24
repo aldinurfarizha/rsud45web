@@ -130,7 +130,7 @@ class Api extends CI_Controller {
         $parampoli=array(
                 'status'=>1
         );
-        $pasien=$this->Global_model->getiddetail('register_poli', $parampasien)->row();
+        $pasien=$this->Global_model->getpasiendetail($parampasien)->row();
         $poli=$this->Global_model->getiddetail('poli', $parampoli)->result();
         if($pasien){
                 $is_antri=true;
@@ -293,10 +293,10 @@ class Api extends CI_Controller {
         }
 
         public function status_antrian(){
-        $id=$this->input->post('id');
+        $registrasi_id=$this->input->post('registrasi_id');
         $date=date('Y-m-d');
         $param=array(
-                'registrasi_id'=>$id
+                'registrasi_id'=>$registrasi_id
         );
         $data=$this->Global_model->getiddetail('register_poli', $param)->row();
         if($data->tanggal_periksa==$date){
@@ -309,7 +309,7 @@ class Api extends CI_Controller {
                 ->set_status_header(200)
                 ->set_output(json_encode(array(
                         'success'=>true,
-                        'data'=>$antrian
+                        'no_antrian'=>$antrian->antrian_no,
                 )));
         }else{
         return $this->output
@@ -317,7 +317,7 @@ class Api extends CI_Controller {
                         ->set_status_header(200)
                         ->set_output(json_encode(array(
                                 'success'=>false,
-                                'message'=>'Nomor Antrian akan muncul pada Tanggal pemeriksaan'
+                                'message'=>'Nomor Antrian akan muncul pada Tanggal pemeriksaan',
                         )));
         }
 
