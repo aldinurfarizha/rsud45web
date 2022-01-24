@@ -63,9 +63,9 @@ class Admin_registrasi extends CI_Controller  {
             'tanggal_periksa'=>$tgl_periksa,
             'cara_kunjungan'=>$cara_kunjungan,
             'poli_id'=>$poli_id,
-            'ditambahkan_oleh'=>'PIC-'.$this->session->userdata('nama'),
+            'ditambahkan_oleh'=>'ADMIN REGISTRASI-'.$this->session->userdata('nama'),
             'antrian_no'=>$no_antrian,
-            'online'=>0
+            'online'=>1
             );
             $this->Global_model->insert('register_poli',$data);
             echo '200';

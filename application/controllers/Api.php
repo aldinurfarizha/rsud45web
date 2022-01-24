@@ -232,7 +232,7 @@ class Api extends CI_Controller {
         $tipe_pelayanan=$this->input->post('tipe_pelayanan');
         $tgl_periksa=$this->input->post('tgl_periksa');
         $cara_kunjungan=$this->input->post('cara_kunjungan');
-        $poli_id=$this->session->userdata('poli_id');
+        $poli_id=$this->input->post('poli_id');
       
         $paramcheck=array(
             'tanggal_periksa'=>$tgl_periksa,
@@ -258,7 +258,7 @@ class Api extends CI_Controller {
             'tanggal_periksa'=>$tgl_periksa,
             'cara_kunjungan'=>$cara_kunjungan,
             'poli_id'=>$poli_id,
-            'ditambahkan_oleh'=>$this->session->userdata('nama'),
+            'ditambahkan_oleh'=>'ONLINE',
             'antrian_no'=>$no_antrian,
             'online'=>0
             );
@@ -269,6 +269,7 @@ class Api extends CI_Controller {
                 ->set_output(json_encode(array(
                         'success'=>true,
                         'id'=>@$ids,
+                        'message'=>'Berhasil Daftar!'
                 )));
             }else{
                return $this->output
@@ -286,7 +287,7 @@ class Api extends CI_Controller {
                 ->set_status_header(200)
                 ->set_output(json_encode(array(
                         'success'=>false,
-                        'message'=>'Daftar Pasien pada tanggal tersebut penuh!t'
+                        'message'=>'Daftar Pasien pada tanggal tersebut penuh!'
                 )));
         }
         }
