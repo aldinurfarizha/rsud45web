@@ -309,7 +309,7 @@ class Api extends CI_Controller {
                 ->set_status_header(200)
                 ->set_output(json_encode(array(
                         'success'=>true,
-                        'no_antrian'=>$antrian->antrian_no,
+                        'antrian'=>$antrian->antrian_no,
                 )));
         }else{
         return $this->output
