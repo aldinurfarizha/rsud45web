@@ -336,5 +336,45 @@ class Api extends CI_Controller {
                                 'message'=>'Pendaftaran Di batalkan',
                         )));
         }
+        public function get_province(){
+        $data=$this->Global_model->get_all('provinces')->result();
+        return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(200)
+                        ->set_output(json_encode(array(
+                                'success'=>true,
+                                'data'=>$data,
+                        )));
+        }
+
+         public function get_regencies(){
+        $province_id=$this->input->post('province_id');
+        $param=array(
+            'province_id'=>$province_id
+        );
+        $data=$this->Global_model->getiddetail('regencies',$param)->result();
+        return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(200)
+                        ->set_output(json_encode(array(
+                                'success'=>true,
+                                'data'=>$data,
+                        )));
+        }
+
+        public function get_districts(){
+        $regencies_id=$this->input->post('regency_id');
+        $param=array(
+        'regency_id'=>$regencies_id
+        );
+        $data=$this->Global_model->getiddetail('districts',$param)->result_array();
+                return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode(array(
+                        'success'=>true,
+                        'data'=>$data,
+                )));
+        }
 
 }
