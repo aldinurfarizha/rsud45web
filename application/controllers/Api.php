@@ -208,6 +208,7 @@ class Api extends CI_Controller {
                 ->set_output(json_encode(array(
                         'success'=>true,
                         'id'=>$id,
+                        'data'=>$data
                 )));
         }
 
@@ -223,6 +224,8 @@ class Api extends CI_Controller {
                 ->set_output(json_encode(array(
                         'success'=>true,
                         'status'=>@$data->status,
+                        'alasan_penolakan'=>@$data->alasan_penolakan,
+                        'no_rm'=>@$data->no_rm,
                 )));
         }
         public function daftar_poli(){
