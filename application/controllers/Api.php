@@ -272,7 +272,8 @@ class Api extends CI_Controller {
                 ->set_output(json_encode(array(
                         'success'=>true,
                         'id'=>@$ids,
-                        'message'=>'Berhasil Daftar!'
+                        'message'=>'Berhasil Daftar!',
+                        'data'=>$data,
                 )));
             }else{
                return $this->output
