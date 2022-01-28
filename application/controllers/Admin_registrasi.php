@@ -91,6 +91,20 @@ class Admin_registrasi extends CI_Controller  {
         $data['row']=$this->Global_model->getpasieddetail($id)->row();
         $this->load->view('admin_registrasi/daftar_poli',$data);
     }
+     public function daftar_poli_new(){
+        $paramdokter=array(
+            'role_id'=>5,
+            'status'=>1,
+            'hapus'=>0
+        );
+        $parampoli=array(
+            'status'=>1,
+            'hapus'=>0
+        );
+        $data['pasien']=$this->Global_model->getverifiedpasien()->result();
+        $data['poli']=$this->Global_model->getiddetail('poli',$parampoli)->result();
+        $this->load->view('admin_registrasi/daftar_poli_new',$data);
+    }
     public function deletepasien(){
         $id=$this->input->post('id');
         $param=array(
@@ -101,7 +115,7 @@ class Admin_registrasi extends CI_Controller  {
     }
     public function terima(){
         $id=$this->input->post('id');
-        $no_rm=rand(100000,1000000);
+        $no_rm=$this->Global_model->getmaxnorm();
         $where=array(
             'id'=>$id
         );
@@ -153,7 +167,7 @@ class Admin_registrasi extends CI_Controller  {
         $pendidikan_id=$this->input->post('pendidikan_id');
         $ibu_kandung=$this->input->post('ibu_kandung');
         $status_martial=$this->input->post('status_martial');
-        $no_rm=rand(100000,1000000);
+        $no_rm=$this->Global_model->getmaxnorm();
 		$data=array(
 			'nama'=>$nama,
             'no_rm'=>$no_rm,

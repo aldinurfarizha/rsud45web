@@ -39,6 +39,11 @@ class Global_model extends CI_Model{
        $this->db->where('role_id <', 5);
        return $this->db->get();
     }
+    function getmaxnorm(){
+      $rm=$this->db->query('SELECT MAX(no_rm) as no_rm from pasien')->row()->no_rm;
+      $no_rm=$rm+=1;
+      return $no_rm;
+    }
     function login_dokter($param){
         $this->db->select('user.*, poli.*');
         $this->db->from('user');
@@ -98,7 +103,7 @@ class Global_model extends CI_Model{
       $this->db->like($where);
       $this->db->order_by('register_poli.catatan_medis','ASC' );
       $this->db->order_by('register_poli.antrian_no', 'ASC' );
-      $this->db->where('register_poli.status', 1);
+      $this->db->where('register_poli.status <', 3);
       return $this->db->get();
   }
     function getuser(){
@@ -128,6 +133,7 @@ class Global_model extends CI_Model{
     $this->db->join('pekerjaan', 'pasien.pekerjaan_id = pekerjaan.id', 'left');
     $this->db->join('pendidikan', 'pasien.pendidikan_id = pendidikan.id', 'left');
     $this->db->where('no_rm >', '0');
+    $this->db->order_by('no_rm', 'ASC');
     return $this->db->get();
 }
 function getunverifiedpasien(){

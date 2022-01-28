@@ -92,7 +92,7 @@
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                     <label for="">Nama Lengkap</label>
-                                        <input type="text" name="nama" onkeypress="return /[a-z]/i.test(event.key)" class="form-control">
+                                        <input type="text" name="nama" onkeypress="return /[a-z ]/i.test(event.key)" class="form-control">
                                     </div>
                                     <div class="form-group col-sm-6">
                                     <label for="">Username</label>

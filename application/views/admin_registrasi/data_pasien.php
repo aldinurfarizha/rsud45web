@@ -110,7 +110,7 @@
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">Nama Lengkap</label>
-                                        <input type="text" name="nama" onkeypress="return /[a-z]/i.test(event.key)" class="form-control form-control-sm">
+                                        <input type="text" name="nama" onkeypress="return /[a-z ]/i.test(event.key)" class="form-control form-control-sm">
                                     </div>
                                      <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">NIK</label>
@@ -118,7 +118,7 @@
                                     </div>
                                   <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">Tempat Lahir</label>
-                                        <input type="text" name="tmplahir" onkeypress="return /[a-z]/i.test(event.key)" class="form-control form-control-sm">
+                                        <input type="text" name="tmplahir" onkeypress="return /[a-z ]/i.test(event.key)" class="form-control form-control-sm">
                                     </div>
                                      <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">Tanggal Lahir</label>

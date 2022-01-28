@@ -20,7 +20,7 @@
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">Nama Lengkap</label>
-                                        <input type="text" name="nama" onkeypress="return /[a-z]/i.test(event.key)" value="<?=@$row->nama?>" class="form-control form-control-sm">
+                                        <input type="text" name="nama" onkeypress="return /[a-z ]/i.test(event.key)" value="<?=@$row->nama?>" class="form-control form-control-sm">
                                     </div>
                                      <div class="form-group col-sm-6">
                                     <label class="text-sm" for="">NIK</label>

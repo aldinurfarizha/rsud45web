@@ -187,6 +187,14 @@ switch ($role_id){
               </p>
             </a>
           </li>
+           <li class="nav-item">
+            <a href="<?=base_url('admin_registrasi/daftar_poli_new')?>" class="nav-link <?php if($this->uri->segment('2')=='daftar_poli_new') { echo"active";}?>">
+              <i class="nav-icon fas fa-paper-plane"></i>
+              <p>
+                Registrasi Poli
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="<?=base_url('admin_registrasi/verifikasi_online')?>" class="nav-link <?php if($this->uri->segment('2')=='verifikasi_online') { echo"active";}?>">
               <i class="nav-icon fas fa-user-check"></i>

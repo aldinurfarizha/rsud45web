@@ -263,7 +263,7 @@ class Api extends CI_Controller {
             'poli_id'=>$poli_id,
             'ditambahkan_oleh'=>'ONLINE',
             'antrian_no'=>$no_antrian,
-            'online'=>0
+            'online'=>1
             );
             $ids=$this->Global_model->insertcallback('register_poli',$data);
             return $this->output
