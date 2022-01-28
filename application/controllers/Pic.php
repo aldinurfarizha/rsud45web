@@ -215,13 +215,20 @@ class Pic extends CI_Controller  {
         $bulan=$this->input->post('bulan');
         $tahun=$this->input->post('tahun');
         $date=$tahun.'-'.$bulan;
+        if($poli_id=''){
+            $data['nama_poli']='Semua';
+        }else{
+            $data['nama_poli']=$this->Global_model->get_nama_poli($poli_id);
+        }
+         $data['status']=$status;
         $param=array(
             'register_poli.poli_id'=>$poli_id,
             'register_poli.status'=>$status,
             'register_poli.tanggal_periksa'=>$date
         );
         $data['data']=$this->Global_model->getpasien($param)->result();
-        $data['date']=$date;
+
+        $data['bulan_daftar']=$date;
          $this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
 	    $this->pdf->setPaper('A4', 'potrait');
@@ -232,15 +239,20 @@ class Pic extends CI_Controller  {
         public function laporan_registrasi_pdf(){
         $this->load->library('pdf');
         $cara_daftar=$this->input->post('cara_daftar');
+        $status_pasien=$this->input->post('status_pasien');
         $bulan=$this->input->post('bulan');
         $tahun=$this->input->post('tahun');
         $date=$tahun.'-'.$bulan;
         $param=array(
             'pasien.is_online'=>$cara_daftar,
-            'pasien.created_at'=>$date
+            'pasien.created_at'=>$date,
+            'pasien.status'=>$status_pasien
         );
+        $data['cara_daftar']=$cara_daftar;
+        $data['status_pasien']=$status_pasien;
+        $data['bulan_daftar']=$date;
         $data['data']=$this->Global_model->getpendaftaranlaporan($param)->result();
-        $data['date']=$date;
+      
         $this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
 	    $this->pdf->setPaper('A4', 'potrait');

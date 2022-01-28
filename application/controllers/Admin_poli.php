@@ -28,7 +28,7 @@ class Admin_poli extends CI_Controller  {
         $tipe_pelayanan=$this->input->post('tipe_pelayanan');
         $tgl_periksa=$this->input->post('tgl_periksa');
         $cara_kunjungan=$this->input->post('cara_kunjungan');
-        $poli_id=$this->session->userdata('poli_id');
+        $poli_id=$this->input->post('poli_id');
       
         $paramcheck=array(
             'tanggal_periksa'=>$tgl_periksa,
@@ -56,7 +56,8 @@ class Admin_poli extends CI_Controller  {
             'poli_id'=>$poli_id,
             'ditambahkan_oleh'=>$this->session->userdata('nama'),
             'antrian_no'=>$no_antrian,
-            'online'=>0
+            'online'=>0,
+            'status'=>1
             );
             $this->Global_model->insert('register_poli',$data);
             echo '200';
@@ -67,7 +68,6 @@ class Admin_poli extends CI_Controller  {
         }else{
             echo 'Daftar Pasien pada Tanggal tersebut penuh';
         }
-        
     }
         function update_panggil(){
             $poli_id=$this->session->userdata('poli_id');

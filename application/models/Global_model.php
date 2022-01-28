@@ -44,6 +44,10 @@ class Global_model extends CI_Model{
       $no_rm=$rm+=1;
       return $no_rm;
     }
+    function get_nama_poli($poli_id){
+      $nama_poli=$this->db->query('SELECT nama_poli from poli where poli_id ='.$poli_id)->row()->nama_poli;
+      return $nama_poli;
+    }
     function login_dokter($param){
         $this->db->select('user.*, poli.*');
         $this->db->from('user');

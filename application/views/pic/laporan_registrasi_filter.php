@@ -24,7 +24,7 @@
                            <form method="post" target="_blank" action="<?=base_url('pic/laporan_registrasi_pdf')?>">
  <div class="card-body">
                                <div class="row">
-                                <div class="form-group col-sm-4">
+                                <div class="form-group col-sm-3">
                                     <label class="text-sm">Cara Mendaftar</label>
                                         <select class="form-control form-control-sm" name="cara_daftar" id="cara_daftar">
                                         <option selected value="">--Semua--</option>
@@ -32,7 +32,16 @@
                                         <option value="1">Online</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-sm-4">
+                                     <div class="form-group col-sm-3">
+                                    <label class="text-sm">Status Pasien</label>
+                                        <select class="form-control form-control-sm" name="status_pasien" id="status_pasien">
+                                        <option selected value="">--Semua--</option>
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Belum Terverifikasi</option>
+                                        <option value="2">Di Tolak</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-3">
                                     <label class="text-sm">Bulan</label>
                                       <select name="bulan" id="bulan" class="form-control form-control-sm" >
                                         <option selected value="">--Semua--</option>
@@ -50,7 +59,7 @@
                                         <option value="12">Desember</option>
                                       </select>
                                     </div>
-                                     <div class="form-group col-sm-4">
+                                     <div class="form-group col-sm-3">
                                     <label class="text-sm">Tahun</label>
                                         <select class="form-control form-control-sm" name="tahun" id="tahun">
                                         <option selected value="">--Semua--</option>

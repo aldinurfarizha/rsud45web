@@ -23,17 +23,23 @@
                         </div>
                             <div class="card-body">
                                 <div class="row justify-content-end">
-                                     <!-- <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
+                                      <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                                     <i class="fa fa-plus"></i> Tambah Pasien
-                                    </button> -->
+                                    </button> 
                                     <input type="hidden" value="<?= base_url('admin_poli/display/')?>"id="url">
                                     <input type="hidden" value="<?= base_url(SOUND)?>"id="audio">
                                     <input type="hidden" value ="<?php echo date('Y-m-d') ?>" id="tanggals">
                                 </div>
                                <div class="row">
                                 <div class="form-group col-sm-6">
-                                    <label class="text-sm">No RM</label>
-                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control form-control-sm" name="filter_no_rm" id="filter_no_rm">
+                                    <label class="text-sm">Poli</label>
+                                        <select class="form-control form-control-sm select2" id="filter_poli_id" name="filter_poli_id">
+                                        <option selected value="">--Semua--</option>
+                                            <?php foreach($poli as $polis){
+                                                ?>
+                                            <option value="<?=$polis->poli_id?>"><?=$polis->nama_poli?></option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                     <div class="form-group col-sm-6">
                                     <label class="text-sm">Status</label>
@@ -79,6 +85,7 @@
                                                 <th>Aksi</th>
                                                 <th style="min-width: 200px;">Pasien</th>
                                                 <th>Status</th>
+                                                <th>Poli</th>
                                                 <th>Dokter</th>
                                                 <th>Cara Bayar</th>
                                                 <th>Tipe Pelayanan</th>
@@ -106,7 +113,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header bg-success">
-              <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Tambah Antrian Pasien</h4>
+              <h4 class="modal-title"><i class="fa fa-money-bill-alt"></i> Daftarkan Pasien Ke Poli</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -124,14 +131,19 @@
                                             <?php } ?>
                                         </select>
                                     </div>
+                                     <div class="form-group col-sm-12">
+                                    <label class="text-sm">Poli</label>
+                                    <select class="form-control form-control-sm select2" id="poli_id" name="poli_id">
+                                        <option selected value="">--Pilih Poli--</option>
+                                            <?php foreach($poli as $polis){
+                                                ?>
+                                            <option value="<?=$polis->poli_id?>"><?=$polis->nama_poli?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
                                        <div class="form-group col-sm-12">
                                     <label class="text-sm">Dokter</label>
-                                    <select class="form-control form-control-sm select2" name="dokter_id">
-                                        <option selected value="">Ketik / Pilih</option>
-                                            <?php foreach($dokter as $dokters){
-                                                ?>
-                                            <option value="<?=$dokters->user_id?>"><?=$dokters->nama?></option>
-                                            <?php } ?>
+                                    <select class="form-control form-control-sm select2" disabled name="dokter_id" id="dokter_id">
                                         </select>
                                     </div>
                                     <div class="col-sm-12">
@@ -250,21 +262,50 @@ $('.select2').select2();
 $('#loading').html(loadingeffect);
 $('#loading').hide();
 $('#nodata').hide();
+ $("#poli_id").change(function(){
+    $("#dokter_id").attr("disabled", false);
+    var dokter_id = $(this).val();
+    $.ajax({
+        url: '<?= base_url('admin_registrasi/getdokter/')?>'+dokter_id,
+        type: 'post',
+        dataType: 'json',
+        beforeSend: function () {
+                Swal.fire({
+                title: 'Mohon Tunggu',
+                html: loadingeffect,
+                showConfirmButton: false,
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                });
+            },
+        success:function(response){
+            Swal.close();
+            var len = response.length;
+            $("#dokter_id").empty();
+            $("#dokter_id").append("<option value=''>--Pilih Dokter--</option>");
+            for( var i = 0; i<len; i++){
+                var id = response[i]['user_id'];
+                var name = response[i]['nama'];
+                $("#dokter_id").append("<option value='"+id+"'>"+name+"</option>");
+                        }
+                    }
+                });
+            });
  function load(){
     $('#table').show();
     $('#informasi').hide();
     $('#nodata').hide();
     $('#table').DataTable().destroy(); $('#data').html('');
-    var filter_no_rm = $('#filter_no_rm').val();
+    var filter_poli_id = $('#filter_poli_id').val();
     var filter_status = $('#filter_status').val();
     var filter_tanggal = $('#filter_tanggal').val();
     var filter_ditambahkan = $('#filter_ditambahkan').val();
     $.ajax({
                 type  : 'POST',
-                url   : '<?php echo base_url('admin_poli/load_antrian')?>',
+                url   : '<?php echo base_url('admin_registrasi/load_antrian')?>',
                 async : false,
                 data:{
-                    "no_rm":filter_no_rm,
+                    "poli_id":filter_poli_id,
                     "status":filter_status,
                     "tanggal_periksa":filter_tanggal,
                     "tipe_registrasi":filter_ditambahkan,
@@ -326,6 +367,7 @@ $('#nodata').hide();
                                 '</td>'+
                                 '<td>'+data[i].nama_pasien+'</td>'+
                                 '<td class="text-center">'+status+'</td>'+
+                                '<td class="text-center">'+data[i].nama_poli+'</td>'+
                                 '<td>'+data[i].nama_dokter+'</td>'+
                                 '<td>'+data[i].cara_bayar+'</td>'+
                                 '<td>'+data[i].tipe_pelayanan+'</td>'+
@@ -348,6 +390,9 @@ $('#nodata').hide();
             rules: {
                 no_rm: {
                     required: true,
+                },
+                poli_id: {
+                    required:true,
                 },
                 dokter_id: {
                     required: true
@@ -444,282 +489,6 @@ $('#nodata').hide();
                 }
             
         });
-        function edit(id,no_rm,nama_pasien, dokter_id, nama_dokter, cara_bayar, tipe_pelayanan, tgl_periksa, cara_kunjungan, alamat){
-          $('#ids').val(id);
-          $('#no_rms').append('<option selected value="'+no_rm+'">'+no_rm+' - '+nama_pasien+' - '+alamat+'</option>');
-          $('#dokter_ids').append('<option selected value="'+dokter_id+'">'+nama_dokter+'</option>');
-          $('#cara_bayars').append('<option selected value="'+cara_bayar+'">'+cara_bayar+'</option>');
-          $('#tipe_pelayanans').append('<option selected value="'+tipe_pelayanan+'">'+tipe_pelayanan+'</option>');
-          $('#tgl_periksas').val(tgl_periksa);
-          $('#cara_kunjungans').append('<option selected value="'+cara_kunjungan+'">'+cara_kunjungan+'</option>');
-    }
-    function panggil(antrian_no, nama){
-        tgl=$('#tanggals').val();
-        $.ajax({
-                    url: "<?= base_url('admin_poli/update_panggil')?>",
-                    type:"post",
-                    data: {
-                        "tgl": tgl,
-                        "antrian_no":antrian_no
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "Selesai",
-                                icon: "success",
-                                timer:"500",
-                                }).then(function() {
-                                    var audio = new Audio($('#audio').val());
-                                    audio.play();
-                                    var url = $('#url').val()+antrian_no+'/'+nama+'/';
-                                    popup(url);
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
-    }
-    function doedit(){
-        $("#editform").valid();
-        };
-        $('#editform').validate({
-            rules: {
-                no_rms: {
-                    required: true,
-                },
-                dokter_ids: {
-                    required: true,
-                },
-                cara_bayars: {
-                    required: true,
-                },
-                tipe_pelayanans: {
-                    required: true,
-                },
-                tgl_periksas: {
-                    required: true,
-                },
-                cara_kunjungan: {
-                    required: true,
-                },
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            },
-            submitHandler: function() {
-                $.ajax({
-              url: "<?= base_url('admin_poli/edit')?>",
-              type:"post",
-              data:$('#editform').serialize(), 
-              beforeSend: function () {
-                  $("#btn_edit").attr("disabled", true);
-                  Swal.fire({
-                  title: 'Sedang Proses',
-                  html: loadingeffect,
-                  showConfirmButton: false,
-                  allowEscapeKey: false,
-                  allowOutsideClick: false,
-                  });
-              },
-               success: function(data){
-                $('#editform').trigger("reset");
-                $("#btn_edit").attr("disabled", false);
-                $('#edit').modal('hide');
-                Swal.fire({
-                        title: "Berhasil",
-                        text: "Data Telah Berhasil di edit",
-                        icon: "success",
-                        button: "Lanjut",
-                          }).then(function() {
-                            load();
-                            });
-            }, error:function(data){
-                   $("#btn_edit").attr("disabled", false);
-                  Swal.fire({
-                    type: 'warning',
-                    title: 'Opps!',
-                    text: 'Server Dalam Perbaikan'
-                  });
-              }
-          });
-               
-                }
-            
-        });
-        function checkin(id){
-            $.ajax({
-                    url: "<?= base_url('admin_poli/checkin')?>",
-                    type:"post",
-                    data: {
-                        "id": id,
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "Check In",
-                                icon: "success",
-                                timer:"500",
-                                }).then(function() {
-                                    load();
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
-};
-        function selesai(id){
-            $.ajax({
-                    url: "<?= base_url('admin_poli/selesai')?>",
-                    type:"post",
-                    data: {
-                        "id": id,
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "Selesai",
-                                icon: "success",
-                                timer:"500",
-                                }).then(function() {
-                                    load();
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
-};
-function batal(id){
-            $.ajax({
-                    url: "<?= base_url('admin_poli/batal')?>",
-                    type:"post",
-                    data: {
-                        "id": id,
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "BATAL",
-                                icon: "success",
-                                timer:"500",
-                                }).then(function() {
-                                    load();
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
-};
-function popup(url){
-  window.open(url,'popUpWindow','height=400,width=600,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
-}
-        function hapus(id){
-            Swal.fire({
-                icon: 'question',
-                title: 'Hapus',
-                text: 'Anda yakin ingin Menghapus Poli ini ?',
-                showConfirmButton: true,
-                showCancelButton: true,
-                showBackdrop: true,
-                confirmButtonText: 'Ya Hapus',
-                cancelButtonText: 'Tidak'
-            }).then(function(data){
-                if(data.value === true){
-                    $.ajax({
-                    url: "<?= base_url('pic/deletepoli')?>",
-                    type:"post",
-                    data: {
-                        "id": id,
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "Data Telah di hapus",
-                                icon: "success",
-                                button: "Lanjut",
-                                }).then(function() {
-                                    location.reload();
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
-                }
-            });
-            
-};
 </script>
 </body>
 </html>

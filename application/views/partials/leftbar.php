@@ -166,6 +166,7 @@ switch ($role_id){
         <div class="info ">
           <a href="#" class="d-block text-lg"><?=$this->session->userdata('nama');?></a>
           <span class="badge badge-success"><?=$this->session->userdata('nama_role')?></span>
+          <button class="btn btn-danger btn-sm">Antrian</button>
         </div>
       </div>
 

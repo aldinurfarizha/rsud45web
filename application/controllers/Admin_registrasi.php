@@ -30,6 +30,19 @@ class Admin_registrasi extends CI_Controller  {
         $data['data']=$this->Global_model->getunverifiedpasien()->result();
         $this->load->view('admin_registrasi/verifikasi_online',$data);
     }
+    function load_antrian(){
+		$status=$this->input->post('status');
+		$tanggal_periksa=$this->input->post('tanggal_periksa');
+		$tipe_registrasi=$this->input->post('tipe_registrasi');
+        $poli_id=$this->input->post('poli_id');
+		$param=array(
+            'register_poli.status'=>$status,
+            'register_poli.tanggal_periksa'=>$tanggal_periksa,
+            'register_poli.online'=>$tipe_registrasi,
+            'register_poli.poli_id'=>$poli_id
+		);
+        echo json_encode($this->Global_model->getpasiencm($param)->result()); 
+    }
     public function input_pasien_poli(){
         $no_rm=$this->input->post('no_rm');
         $dokter_id=$this->input->post('dokter_id');
