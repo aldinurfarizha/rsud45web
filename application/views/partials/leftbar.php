@@ -166,7 +166,9 @@ switch ($role_id){
         <div class="info ">
           <a href="#" class="d-block text-lg"><?=$this->session->userdata('nama');?></a>
           <span class="badge badge-success"><?=$this->session->userdata('nama_role')?></span>
-          <button class="btn btn-danger btn-sm">Antrian</button>
+          <br>
+          <input type="hidden" value="<?= base_url(SOUND)?>"id="audio">
+          <button onclick="antrian_loket()" class="btn btn-primary btn-sm">Display Antrian</button><button onclick="next()" class="btn btn-warning btn-sm">Next</button>
         </div>
       </div>
 

@@ -26,7 +26,7 @@
                                <div class="row">
                                 <div class="form-group col-sm-6">
                                     <label class="text-sm">Nama Poli</label>
-                                       <select class="form-control form-control-sm" name="nama_poli" id="nama_poli">
+                                       <select class="form-control form-control-sm" name="poli_id" id="poli_id">
                                         <option value="">--Semua--</option>
                                         <?php foreach($poli as $polis){ ?>
                                         <option value="<?=$polis->poli_id?>"><?=$polis->nama_poli?></option>

@@ -12,49 +12,45 @@
 </script>
 <script type="text/javascript">
 var loadingeffect='<div style="text-align:center"><i class="fas fa-2x fa-sync-alt fa-3x fa-spin" style="margin-top: 30px; margin-bottom: 30px;" aria-hidden="true"></i></div>';
- function tossetuju(){
-        var checkBox = document.getElementById("checkbox");
-        var warning = document.getElementById("check_warning");
-        if (checkBox.checked == false){
-            warning.style.display = "block";
-            return;
-            }
-            $.ajax({
-              url: "<?= base_url('admin/master/tossetuju')?>",
-              type: "POST",
-              beforeSend: function () {
-                Pace.restart();
-            },
-              success:function(response){
-                location.reload();
-              },
-
-              error:function(response){
-                  Swal.fire({
-                    type: 'error',
-                    title: 'Opps!',
-                    text: 'Server Dalam Perbaikan'
-                  });
-              }
-    });
+function antrian_loket(){
+  window.open('<?=base_url('admin_registrasi/display')?>','popUpWindow','height=400,width=600,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+}
+function next(){
+  $.ajax({
+                    url: "<?= base_url('admin_registrasi/next')?>",
+                    type:"post",
+                    beforeSend: function () {
+                        Swal.fire({
+                        title: 'Sedang Proses',
+                        html: loadingeffect,
+                        showConfirmButton: false,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        });
+                    },
+                    success: function(data){
+                        Swal.fire({
+                                title: "Berhasil",
+                                text: "Selesai",
+                                icon: "success",
+                                timer:"500",
+                                }).then(function() {
+                                    var audio = new Audio($('#audio').val());
+                                    audio.play();
+                                    antrian_loket();
+                                    });
+                    }, error:function(data){
+                        Swal.fire({
+                            type: 'warning',
+                            title: 'Opps!',
+                            text: 'Server Dalam Perbaikan'
+                        });
+                    }
+                });
 }
 function popup(url){
   window.open(url,'popUpWindow','height=400,width=600,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
 }
-		$(document).ready(function(){
-            $('#tos').modal('show');
-            $(document).ajaxStart(function() { Pace.restart(); });
-		})
-        function show(){
-            Pace.restart();
-        };
-        function hide(){
-          
-        }
-   
-
-    
-
    $("#logout").click( function() {
     Swal.fire({
                 icon: 'question',

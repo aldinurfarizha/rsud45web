@@ -27,7 +27,6 @@
                                     <i class="fa fa-plus"></i> Tambah Pasien
                                     </button> 
                                     <input type="hidden" value="<?= base_url('admin_poli/display/')?>"id="url">
-                                    <input type="hidden" value="<?= base_url(SOUND)?>"id="audio">
                                     <input type="hidden" value ="<?php echo date('Y-m-d') ?>" id="tanggals">
                                 </div>
                                <div class="row">
@@ -291,6 +290,14 @@ $('#nodata').hide();
                     }
                 });
             });
+function cetak(no_antrian, nama_pasien, nama_poli){
+    html='<html><center><h3>'+nama_poli+'</h3><h3>No Antrian:</h3><h1>'+no_antrian+'</h1><h3>'+nama_pasien+'</h3><p><?=date('Y-m-d')?></p></center></html>';
+    var printContents = html;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+   }
  function load(){
     $('#table').show();
     $('#informasi').hide();
@@ -331,34 +338,14 @@ $('#nodata').hide();
                         status='';
                         button='';
                         switch(data[i].status){
-                                case "0":
-                                status='<span class="badge badge-secondary">Belum Check In</span>';
-                                    button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
-                                        '<div class="dropdown-menu">'+
-                                        '<a class="dropdown-item" href="#" onclick="edit(\'' +data[i].registrasi_id+ '\',\'' +data[i].no_rm+ '\',\'' +data[i].nama_pasien+ '\',\'' +data[i].dokter_id+ '\',\'' +data[i].nama_dokter+ '\',\'' +data[i].cara_bayar+ '\',\'' +data[i].tipe_pelayanan+ '\',\'' +data[i].tanggal_periksa+ '\',\'' +data[i].cara_kunjungan+ '\',\'' +data[i].alamat_pasien+ '\')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit">Edit</a>'+
-                                        '<a class="dropdown-item" href="#" onclick="checkin('+data[i].registrasi_id+')">Check In</a>'+
-                                        '<a class="dropdown-item" href="#" onclick="batal('+data[i].registrasi_id+')">Batal Periksa</a>'+
-                                        '</div></div>';
-                                    break;
-
                                 case "1":
                                  status='<span class="badge badge-primary">Check In</span>';
                                  button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
                                             '<div class="dropdown-menu">'+
-                                            '<a class="dropdown-item" href="#" onclick="selesai('+data[i].registrasi_id+')">Selesai</a>'+
-                                            '<a class="dropdown-item" href="#" onclick="panggil(\'' +data[i].antrian_no+ '\',\'' +data[i].nama_pasien+ '\')">Panggil</a>'+
+                                            '<a class="dropdown-item" href="#" onclick="cetak(\'' +data[i].antrian_no+ '\',\'' +data[i].nama_pasien+ '\',\'' +data[i].nama_poli+ '\')">Cetak</a>'+
                                             '</div></div>';
                                  break;
 
-                                 case "2":
-                                 button='';
-                                 status='<span class="badge badge-success">SELESAI</span>';
-                                 break;
-                                
-                                 case "9":
-                                 button='';
-                                 status='<span class="badge badge-danger">BATAL</span>';
-                                 break;
                         }
                         html += '<tr class"text-sm">'+
                                 '<td class="text-center">'+data[i].antrian_no+'</td>'+
@@ -383,8 +370,10 @@ $('#nodata').hide();
  
             });
    }
+  
         function input(){
         $("#inputform").valid();
+
         };
         $('#inputform').validate({
             rules: {
@@ -442,18 +431,15 @@ $('#nodata').hide();
               },
                success: function(response){
                 switch(response){
-                     case '200':
-                    $("#add").attr("disabled", false);
-                    $('#inputform').trigger("reset");
-                    $('#modal-default').modal('hide');
+                     case '400':
+                        $("#add").attr("disabled", false);
                         Swal.fire({
-                        title: "Berhasil",
-                        text: "Data Telah Berhasil di input",
-                        icon: "success",
-                        button: "Lanjut",
-                          }).then(function() {
-                            load();
-                            });
+                        title: "Gagal",
+                        text: "Daftar Pasien pada tanggal tersebut penuh!",
+                        icon: "error",
+                        button: "OK",
+                          })
+                    
                         break;
                         case '300':
                     $("#add").attr("disabled", false);
@@ -465,13 +451,19 @@ $('#nodata').hide();
                           });
                         break;
                      default:
-                          $("#add").attr("disabled", false);
+                    $("#add").attr("disabled", false);
+                    $('#inputform').trigger("reset");
+                    $('#modal-default').modal('hide');
                         Swal.fire({
-                        title: "Gagal",
-                        text: "Daftar Pasien pada tanggal tersebut penuh!",
-                        icon: "error",
-                        button: "OK",
-                          })
+                        title: "Berhasil",
+                        text: "Data Telah Berhasil di input",
+                        icon: "success",
+                        button: "Lanjut",
+                          }).then(function() {
+                              
+                            cetak();
+                            load();
+                            });
                         break;
                 }
 

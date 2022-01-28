@@ -11,20 +11,20 @@ $model =& get_instance();
 function cara_daftar($cara_daftar){
   switch ($cara_daftar){
         case "0":
-        return 'OFFLINE';
+        return 'Offline';
         break;
         case "1":
-          return 'ONLINE';
+          return 'Online';
           break;
             }
 }
 function status_pasien($status_pasien){
   switch ($status_pasien){
         case "0":
-        return 'Belum AktifE';
+        return 'Belum Aktif';
         break;
         case "1":
-          return 'ONLINE';
+          return 'Aktif';
           break;
           case "2":
             return 'NON-AKTIF/TOLAK';
@@ -34,12 +34,12 @@ function status_pasien($status_pasien){
 
             
 ?>
-<title>Laporan Poli</title>
-<center><h3>Laporan Daftar Pasien Poli</h3></center>
+<title>Laporan Registrasi</title>
+<center><h3>Laporan Daftar Pasien</h3></center>
 <p style="text-align: right">Tgl Cetak : <?=date("Y-m-d")?></p>
-<p style="text-align: right">Cara Mendaftar : <?php if($cara_daftar=''){echo 'Semua';}else{echo cara_daftar($cara_daftar);}?></p>
-<p style="text-align: right">Status Pasien : <?php if($status_pasien=''){echo 'Semua';}else{echo status_pasien($status_pasien);}?></p>
-<p style="text-align: right">Bulan Daftar : <?php if($bulan_daftar=''){echo 'Semua';}else{echo $bulan_daftar;}?></p></p>
+<p style="text-align: right">Cara Mendaftar : <?php if($cara_daftar==null){echo 'Semua';}else{echo cara_daftar($cara_daftar);}?></p>
+<p style="text-align: right">Status Pasien : <?php if($status_pasien==null){echo 'Semua';}else{echo status_pasien($status_pasien);}?></p>
+<p style="text-align: right"><?php if($bulan_daftar==null){echo 'Tahun:Semua Bulan:Semua';}else{echo $bulan_daftar;}?></p></p>
 <hr />
 <table border="1" cellspacing="0" style="border-collapse:collapse; width:100%">
   <thead>

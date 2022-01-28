@@ -39,6 +39,39 @@ class Global_model extends CI_Model{
        $this->db->where('role_id <', 5);
        return $this->db->get();
     }
+    function input_antrian_loket(){
+      $date=date('Y-m-d');
+      $this->db->query('insert into antrian_loket (date, antrian_no) values("'.$date.'", 1)ON DUPLICATE KEY UPDATE antrian_no = antrian_no + 1;');
+    }
+    function input_temp_antrian_loket(){
+      $date=date('Y-m-d');
+      $this->db->query('insert into temp_antrian_loket (date, antrian_no) values("'.$date.'", 1)ON DUPLICATE KEY UPDATE antrian_no = antrian_no + 1;');
+    }
+    function get_antrian_loket_temp(){
+      $date=date('Y-m-d');
+      $this->db->select('antrian_no');
+      $this->db->from('temp_antrian_loket');
+      $this->db->where('date',$date);
+      @$no_antrian=$this->db->get()->row()->antrian_no;
+      if($no_antrian){
+        return $no_antrian;
+      }else{
+        return $no_antrian=1;
+      }
+    }
+
+    function get_antrian_loket(){
+      $date=date('Y-m-d');
+      $this->db->select('antrian_no');
+      $this->db->from('antrian_loket');
+      $this->db->where('date',$date);
+      @$no_antrian=$this->db->get()->row()->antrian_no;
+      if($no_antrian){
+        return $no_antrian+1;
+      }else{
+        return $no_antrian=1;
+      }
+    }
     function getmaxnorm(){
       $rm=$this->db->query('SELECT MAX(no_rm) as no_rm from pasien')->row()->no_rm;
       $no_rm=$rm+=1;

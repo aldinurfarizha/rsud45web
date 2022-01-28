@@ -209,26 +209,52 @@ class Pic extends CI_Controller  {
         $this->load->view('pic/laporan_registrasi_filter', $data);
     }
     public function laporan_poli_pdf(){
+        $bulannama=array(
+            '01'=>'Januari',
+            '02'=>'Februari',
+            '03'=>'Maret',
+            '04'=>'April',
+            '05'=>'Mei',
+            '06'=>'Juni',
+            '07'=>'Juli',
+            '08'=>'Agustus',
+            '09'=>'September',
+            '10'=>'Oktober',
+            '11'=>'November',
+            '12'=>'Desember'
+        );
         $this->load->library('pdf');
         $poli_id=$this->input->post('poli_id');
         $status=$this->input->post('status');
         $bulan=$this->input->post('bulan');
         $tahun=$this->input->post('tahun');
         $date=$tahun.'-'.$bulan;
-        if($poli_id=''){
-            $data['nama_poli']='Semua';
-        }else{
-            $data['nama_poli']=$this->Global_model->get_nama_poli($poli_id);
-        }
          $data['status']=$status;
         $param=array(
             'register_poli.poli_id'=>$poli_id,
             'register_poli.status'=>$status,
             'register_poli.tanggal_periksa'=>$date
         );
+        if($poli_id==null){
+            $data['nama_poli']='Semua';
+        }else{
+            $data['nama_poli']=$this->Global_model->get_nama_poli($poli_id);
+        }
         $data['data']=$this->Global_model->getpasien($param)->result();
-
-        $data['bulan_daftar']=$date;
+        if($date=='-'){
+            $data['bulan_daftar']='Tahun: Semua Bulan: Semua';
+        }else{
+            if($tahun==null){
+                $tahun='Semua';
+            }
+            if($bulan==null){
+                $bulan='Semua';
+            }else{
+                $bulan=$bulannama[$bulan];
+            }
+            $data['bulan_daftar']='Tahun :'.$tahun.' Bulan :'.$bulan;
+        }
+        
          $this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
 	    $this->pdf->setPaper('A4', 'potrait');
@@ -237,6 +263,20 @@ class Pic extends CI_Controller  {
     }
 
         public function laporan_registrasi_pdf(){
+        $bulannama=array(
+            '01'=>'Januari',
+            '02'=>'Februari',
+            '03'=>'Maret',
+            '04'=>'April',
+            '05'=>'Mei',
+            '06'=>'Juni',
+            '07'=>'Juli',
+            '08'=>'Agustus',
+            '09'=>'September',
+            '10'=>'Oktober',
+            '11'=>'November',
+            '12'=>'Desember'
+        );
         $this->load->library('pdf');
         $cara_daftar=$this->input->post('cara_daftar');
         $status_pasien=$this->input->post('status_pasien');
@@ -250,9 +290,20 @@ class Pic extends CI_Controller  {
         );
         $data['cara_daftar']=$cara_daftar;
         $data['status_pasien']=$status_pasien;
-        $data['bulan_daftar']=$date;
         $data['data']=$this->Global_model->getpendaftaranlaporan($param)->result();
-      
+        if($date=='-'){
+            $data['bulan_daftar']='Tahun: Semua Bulan: Semua';
+        }else{
+            if($tahun==null){
+                $tahun='Semua';
+            }
+            if($bulan==null){
+                $bulan='Semua';
+            }else{
+                $bulan=$bulannama[$bulan];
+            }
+            $data['bulan_daftar']='Tahun :'.$tahun.' Bulan :'.$bulan;
+        }
         $this->load->library('pdf');
 		$this->pdf->set_option('isRemoteEnabled', true);
 	    $this->pdf->setPaper('A4', 'potrait');

@@ -60,13 +60,13 @@ class Admin_poli extends CI_Controller  {
             'status'=>1
             );
             $this->Global_model->insert('register_poli',$data);
-            echo '200';
+            $id=$this->db->insert_id();
             }else{
                 echo '300';
             }
            
         }else{
-            echo 'Daftar Pasien pada Tanggal tersebut penuh';
+            echo '400';
         }
     }
         function update_panggil(){

@@ -23,15 +23,28 @@ function status($status){
               return 'BATAL';
             }
 }
+function status_pasien($status_pasien){
+  switch ($status_pasien){
+        case "0":
+        return 'Belum AktifE';
+        break;
+        case "1":
+          return 'ONLINE';
+          break;
+          case "2":
+            return 'NON-AKTIF/TOLAK';
+            break;
+            }
+}
 
             
 ?>
 <title>Laporan Poli</title>
 <center><h3>Laporan Daftar Pasien Poli</h3></center>
 <p style="text-align: right">Tgl Cetak : <?=date("Y-m-d")?></p>
-<p style="text-align: right">Nama Poli : <?php $nama_poli?></p>
-<p style="text-align: right">Status : <?php if($status=''){echo 'Semua';}else{echo status_pasien($status);}?></p>
-<p style="text-align: right">Bulan Daftar : <?php if($bulan_daftar=''){echo 'Semua';}else{echo $bulan_daftar;}?></p></p>
+<p style="text-align: right">Nama Poli : <?= $nama_poli?></p>
+<p style="text-align: right">Status : <?php if($status==null){echo 'Semua';}else{echo status($status);}?></p>
+<p style="text-align: right"><?php if($bulan_daftar==null){echo 'Semua';}else{echo $bulan_daftar;}?></p></p>
 <hr />
 <table border="1" cellspacing="0" style="border-collapse:collapse; width:100%">
   <thead>

@@ -6,6 +6,14 @@ class Admin_registrasi extends CI_Controller  {
     public function dashboard(){
         $this->load->view('admin_registrasi/dashboard');
     }
+    function display(){
+        $data['no_antrian']=$this->Global_model->get_antrian_loket_temp();
+        $this->load->view('admin_registrasi/display',$data);
+    }
+    function next(){
+        $this->Global_model->input_temp_antrian_loket();
+        echo '1';
+    }
     public function data_pasien(){
         $data['agama']=$this->Global_model->get_all('agama')->result();
         $data['pendidikan']=$this->Global_model->get_all('pendidikan')->result();
@@ -202,7 +210,8 @@ class Admin_registrasi extends CI_Controller  {
             'status_martial'=>$status_martial,
 			'file'=>$file,
             'create_by'=>$nama_admin,
-            'status'=>1
+            'status'=>1,
+            'is_online'=>0,
 		);
         echo $this->Global_model->insertcallback('pasien',$data);
       

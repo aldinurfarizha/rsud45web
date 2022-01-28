@@ -37,6 +37,9 @@
             <div class="form-group col-sm-12">
             <button type="submit" class="btn btn-primary btn-md col-md-12" id="login">Login</button>
             </div>
+            <div class="form-group col-sm-12">
+            <a href="<?=base_url('loket')?>" class="btn btn-warning btn-md col-md-12">ANTRIAN LOKET</a>
+            </div>
         </div>
       </form>
     </div>
