@@ -60,13 +60,23 @@ class Admin_poli extends CI_Controller  {
             'status'=>1
             );
             $this->Global_model->insert('register_poli',$data);
-            $id=$this->db->insert_id();
+            $where=array(
+                'antrian_no'=>$no_antrian,
+                'tanggal_periksa'=>$tgl_periksa,
+            );
+            echo json_encode($this->Global_model->getpasiendetail($where)->result_array());
             }else{
-                echo '300';
+                $response_code=array(
+                    'res'=>300
+                );
+                echo json_encode($response_code);
             }
            
         }else{
-            echo '400';
+            $response_code=array(
+                'res'=>400
+            );
+            echo json_encode($response_code);
         }
     }
         function update_panggil(){

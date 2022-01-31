@@ -342,10 +342,19 @@ function cetak(no_antrian, nama_pasien, nama_poli){
                                  status='<span class="badge badge-primary">Check In</span>';
                                  button='<div class="btn-group"><button type="button" class="btn btn-sm bg-gray dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi</button>'+
                                             '<div class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="#" onclick="edit(\'' +data[i].registrasi_id+ '\',\'' +data[i].no_rm+ '\',\'' +data[i].nama_pasien+ '\',\'' +data[i].dokter_id+ '\',\'' +data[i].nama_dokter+ '\',\'' +data[i].cara_bayar+ '\',\'' +data[i].tipe_pelayanan+ '\',\'' +data[i].tanggal_periksa+ '\',\'' +data[i].cara_kunjungan+ '\',\'' +data[i].alamat_pasien+ '\')" data-toggle="modal" class="btn btn-sm btn-warning" data-target="#edit">Edit</a>'+
                                             '<a class="dropdown-item" href="#" onclick="cetak(\'' +data[i].antrian_no+ '\',\'' +data[i].nama_pasien+ '\',\'' +data[i].nama_poli+ '\')">Cetak</a>'+
                                             '</div></div>';
                                  break;
-
+                                 case "0":
+                                 status='<span class="badge badge-secondary">Belum Check in</span>';
+                                 break;
+                                 case "2":
+                                 status='<span class="badge badge-success">SELESAI</span>';
+                                 break;
+                                 case "9":
+                                 status='<span class="badge badge-danger">BATAL</span>';
+                                 break;
                         }
                         html += '<tr class"text-sm">'+
                                 '<td class="text-center">'+data[i].antrian_no+'</td>'+
@@ -370,6 +379,90 @@ function cetak(no_antrian, nama_pasien, nama_poli){
  
             });
    }
+   function edit(id,no_rm,nama_pasien, dokter_id, nama_dokter, cara_bayar, tipe_pelayanan, tgl_periksa, cara_kunjungan, alamat){
+          $('#ids').val(id);
+          $('#no_rms').append('<option selected value="'+no_rm+'">'+no_rm+' - '+nama_pasien+' - '+alamat+'</option>');
+          $('#dokter_ids').append('<option selected value="'+dokter_id+'">'+nama_dokter+'</option>');
+          $('#cara_bayars').append('<option selected value="'+cara_bayar+'">'+cara_bayar+'</option>');
+          $('#tipe_pelayanans').append('<option selected value="'+tipe_pelayanan+'">'+tipe_pelayanan+'</option>');
+          $('#tgl_periksas').val(tgl_periksa);
+          $('#cara_kunjungans').append('<option selected value="'+cara_kunjungan+'">'+cara_kunjungan+'</option>');
+    }
+    function doedit(){
+        $("#editform").valid();
+        };
+        $('#editform').validate({
+            rules: {
+                no_rms: {
+                    required: true,
+                },
+                dokter_ids: {
+                    required: true,
+                },
+                cara_bayars: {
+                    required: true,
+                },
+                tipe_pelayanans: {
+                    required: true,
+                },
+                tgl_periksas: {
+                    required: true,
+                },
+                cara_kunjungan: {
+                    required: true,
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+            submitHandler: function() {
+                $.ajax({
+              url: "<?= base_url('admin_poli/edit')?>",
+              type:"post",
+              data:$('#editform').serialize(), 
+              beforeSend: function () {
+                  $("#btn_edit").attr("disabled", true);
+                  Swal.fire({
+                  title: 'Sedang Proses',
+                  html: loadingeffect,
+                  showConfirmButton: false,
+                  allowEscapeKey: false,
+                  allowOutsideClick: false,
+                  });
+              },
+               success: function(data){
+                $('#editform').trigger("reset");
+                $("#btn_edit").attr("disabled", false);
+                $('#edit').modal('hide');
+                Swal.fire({
+                        title: "Berhasil",
+                        text: "Data Telah Berhasil di edit",
+                        icon: "success",
+                        button: "Lanjut",
+                          }).then(function() {
+                            load();
+                            });
+            }, error:function(data){
+                   $("#btn_edit").attr("disabled", false);
+                  Swal.fire({
+                    type: 'warning',
+                    title: 'Opps!',
+                    text: 'Server Dalam Perbaikan'
+                  });
+              }
+          });
+               
+                }
+            
+        });
   
         function input(){
         $("#inputform").valid();
@@ -419,6 +512,7 @@ function cetak(no_antrian, nama_pasien, nama_poli){
               url: "<?= base_url('admin_poli/input_pasien')?>",
               type:"post",
               data:$('#inputform').serialize(), 
+              dataType: 'json',
               beforeSend: function () {
                   $("#add").attr("disabled", true);
                   Swal.fire({
@@ -430,8 +524,9 @@ function cetak(no_antrian, nama_pasien, nama_poli){
                   });
               },
                success: function(response){
-                switch(response){
-                     case '400':
+                console.log(response['res']);
+                switch(response['res']){
+                     case 400:
                         $("#add").attr("disabled", false);
                         Swal.fire({
                         title: "Gagal",
@@ -441,7 +536,7 @@ function cetak(no_antrian, nama_pasien, nama_poli){
                           })
                     
                         break;
-                        case '300':
+                        case 300:
                     $("#add").attr("disabled", false);
                         Swal.fire({
                       title: "Gagal",
@@ -454,15 +549,15 @@ function cetak(no_antrian, nama_pasien, nama_poli){
                     $("#add").attr("disabled", false);
                     $('#inputform').trigger("reset");
                     $('#modal-default').modal('hide');
+                    cetak(response[0]['antrian_no'], response[0]['nama_pasien'], response[0]['nama_poli']);
                         Swal.fire({
                         title: "Berhasil",
                         text: "Data Telah Berhasil di input",
                         icon: "success",
                         button: "Lanjut",
+                        timer:500,
                           }).then(function() {
-                              
-                            cetak();
-                            load();
+                              location.reload();
                             });
                         break;
                 }

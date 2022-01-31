@@ -170,9 +170,10 @@ $('#table').DataTable({
             },
             submitHandler: function() {
                 $.ajax({
-              url: "<?= base_url('admin_registrasi/input_pasien_poli')?>",
+              url: "<?= base_url('admin_poli/input_pasien')?>",
               type:"post",
               data:$('#inputform').serialize(), 
+              dataType: 'json',
               beforeSend: function () {
                   $("#add").attr("disabled", true);
                   Swal.fire({
@@ -183,17 +184,11 @@ $('#table').DataTable({
                   allowOutsideClick: false,
                   });
               },
-               success: function(data){
+               success: function(response){
                 $("#add").attr("disabled", false);
                 $('#inputform').trigger("reset");
-                Swal.fire({
-                        title: "Berhasil",
-                        text: "Data Telah Berhasil di input",
-                        icon: "success",
-                        button: "Lanjut",
-                          }).then(function() {
-                            window.location.href = "<?= base_url('admin_registrasi/data_pasien/')?>";
-                            });
+                cetak(response[0]['antrian_no'], response[0]['nama_pasien'], response[0]['nama_poli']);
+                window.location.href = "<?= base_url('admin_registrasi/daftar_poli_new/')?>";
             }, error:function(data){
                 $("#add").attr("disabled", false);
                   Swal.fire({
@@ -207,55 +202,14 @@ $('#table').DataTable({
                 }
             
         });
-        
-        function hapus(id){
-            Swal.fire({
-                icon: 'question',
-                title: 'Hapus',
-                text: 'Anda yakin ingin Menghapus ini ?',
-                showConfirmButton: true,
-                showCancelButton: true,
-                showBackdrop: true,
-                confirmButtonText: 'Ya Hapus',
-                cancelButtonText: 'Tidak'
-            }).then(function(data){
-                if(data.value === true){
-                    $.ajax({
-                    url: "<?= base_url('pic/deleteuser')?>",
-                    type:"post",
-                    data: {
-                        "id": id,
-                    },
-                    beforeSend: function () {
-                        Swal.fire({
-                        title: 'Sedang Proses',
-                        html: loadingeffect,
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        });
-                    },
-                    success: function(data){
-                        Swal.fire({
-                                title: "Berhasil",
-                                text: "Data Telah di hapus",
-                                icon: "success",
-                                button: "Lanjut",
-                                }).then(function() {
-                                    location.reload();
-                                    });
-                    }, error:function(data){
-                        Swal.fire({
-                            type: 'warning',
-                            title: 'Opps!',
-                            text: 'Server Dalam Perbaikan'
-                        });
-                    }
-                });
-                }
-            });
-            
-};
+        function cetak(no_antrian, nama_pasien, nama_poli){
+    html='<html><center><h3>'+nama_poli+'</h3><h3>No Antrian:</h3><h1>'+no_antrian+'</h1><h3>'+nama_pasien+'</h3><p><?=date('Y-m-d')?></p></center></html>';
+    var printContents = html;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+   }
 </script>
 </body>
 </html>

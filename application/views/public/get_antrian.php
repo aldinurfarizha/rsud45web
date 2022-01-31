@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="<?=base_url('assets/')?>plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <link rel="stylesheet" href="<?=base_url('assets/')?>dist/css/adminlte.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="<?=base_url('assets/')?>plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <link rel="stylesheet" href="<?=base_url('assets/')?>dist/css/preloader.css">
     <link rel="stylesheet" href="<?=base_url('assets/plugins/')?>pace-progress/themes/orange/pace-theme-flat-top.css">
@@ -21,14 +20,12 @@
   <div class="row justify-content-center">
   <div class="card col-md-10">
     <div class="card-body">
-      <form id="submit">
         <div class="row justify-content-center">
             <div class="form-group col-sm-12">
               <p class="text-center">Klik Tombol di bawah untuk mendapatkan nomor antrian</p>
             <Button onclick="printDiv('printableArea')" id="antri" class="btn btn-warning btn-lg col-md-12">AMBIL NOMOR ANTRIAN</Button>
             </div>
         </div>
-      </form>
       
     </div>
   </div>
@@ -55,7 +52,6 @@
               url: "<?= base_url('loket/proses_antri')?>",
               type: "POST",
               beforeSend(){
-              Pace.restart();
                   Swal.fire({
                   title: 'Sedang Mengambil Antrian',
                   html: loadingeffect,
@@ -84,12 +80,13 @@
                 }
               },
               error:function(response){
-                $("#antri").attr("disabled", false);
-                  Swal.fire({
-                    type: 'error',
-                    title: 'Opps!',
-                    text: 'Server Dalam Perbaikan'
-                  });
+                console.log(response);
+                // $("#antri").attr("disabled", false);
+                //   Swal.fire({
+                //     type: 'error',
+                //     title: 'Opps!',
+                //     text: 'Server Dalam Perbaikan'
+                //   });
               }
             })
 };      

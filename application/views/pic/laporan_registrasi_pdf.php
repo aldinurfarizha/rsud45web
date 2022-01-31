@@ -21,7 +21,7 @@ function cara_daftar($cara_daftar){
 function status_pasien($status_pasien){
   switch ($status_pasien){
         case "0":
-        return 'Belum Aktif';
+        return 'Belum Verifikasi';
         break;
         case "1":
           return 'Aktif';

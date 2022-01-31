@@ -56,7 +56,7 @@ class Global_model extends CI_Model{
       if($no_antrian){
         return $no_antrian;
       }else{
-        return $no_antrian=1;
+        return $no_antrian=0;
       }
     }
 
