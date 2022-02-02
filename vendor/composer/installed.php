@@ -1,24 +1,24 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
+    'pretty_version' => 'dev-master',
+    'version' => 'dev-master',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => 'bd2c9ae0f81360c4955d0c3c4fa52133e6c084f7',
     'name' => 'codeigniter/framework',
   ),
   'versions' => 
   array (
     'codeigniter/framework' => 
     array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => 'bd2c9ae0f81360c4955d0c3c4fa52133e6c084f7',
     ),
     'doctrine/instantiator' => 
     array (
